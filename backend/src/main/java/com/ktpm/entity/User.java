@@ -53,7 +53,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Token> tokens;
 
     @Override

@@ -30,8 +30,15 @@ public class AuthService {
 
 
     private void saveToken(String code, User user){
+        System.out.println(user);
         Token token = Token.builder().code(code).isSignOut(false).user(user).build();
-        tokenDao.save(token);
+        try {
+            tokenDao.save(token);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
     
 
@@ -75,7 +82,7 @@ public class AuthService {
                 signInRequest.getEmail(), signInRequest.getPassword()
         ));
 
-        var user = userDao.findById(signInRequest.getEmail()).orElseThrow();
+        User user = userDao.findById(signInRequest.getEmail()).orElseThrow();
         String accessToken = jwtService.generateToken(user);
         // saveToken(accessToken, user);
 

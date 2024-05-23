@@ -27,18 +27,16 @@ function Navbar() {
   }
 }
 
-  return <nav className="bg-[#F0F6F6] mb-12 h-20 px-24 flex justify-between items-center">
+  return <nav className="bg-[#F0F6F6] h-20 px-24 flex justify-between items-center">
     <div className=''>
       <Link to={"/"} className='text-blue-700 text-3xl font-bold'>
-        Flashcard
+        Online Learning
       </Link>
 
     </div>
     <div>
       <ul className='flex gap-x-8'>
         <Link to={"/"} className='hover:cursor-pointer font-medium'>Trang chủ</Link>
-        {isAuthenticated && <Link to={"/decks"} className='hover:cursor-pointer font-medium'>Bộ thẻ</Link>}
-        {isAuthenticated && <Link to={"/cards"} className='hover:cursor-pointer font-medium'>Thẻ</Link>}
         {isAuthenticated && <Link to={"/classes"} className='hover:cursor-pointer font-medium'>Lớp</Link>}
         <li className='hover:cursor-pointer font-medium'>Liên hệ</li>
       </ul>

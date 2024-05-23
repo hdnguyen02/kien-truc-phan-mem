@@ -23,7 +23,7 @@ public class Token {
     @Column(nullable = false)
     private Boolean isSignOut;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="email_user")
     private User user;
 }

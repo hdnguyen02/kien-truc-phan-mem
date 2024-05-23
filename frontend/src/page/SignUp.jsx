@@ -4,7 +4,7 @@ import Fail from '../component/Fail'
 import '../input.css'
 import { Link } from 'react-router-dom'
 
-function SignIn() {
+function SignUp() {
   const failRef = useRef()
   // khởi tạo 1 biến. 
   let isShowPassword = false
@@ -28,8 +28,8 @@ function SignIn() {
 
   }
 
-  async function postSignIn(email, password, isRemember) {
-    const url = baseUrl + '/api/v1/auth/sign-in'
+  async function postSignUp(email, password, isRemember) {
+    const url = baseUrl + '/api/v1/auth/sign-up'
     try {
       const jsonRp = await fetch(url, {
         method: 'POST',
@@ -53,13 +53,13 @@ function SignIn() {
       failRef.current.show(error.message, 2000)
     }
   }
-  function handleSignIn(event) {
+  function handleSignUp(event) {
     event.preventDefault()
     const email = emailRef.current.value
     const password = passwordRef.current.value
     const isRemember = document.getElementById('is-remember').checked
 
-    postSignIn(email, password, isRemember)
+    postSignUp(email, password, isRemember)
   }
 
 
@@ -74,8 +74,8 @@ function SignIn() {
   </div>
   {/* Right: Login Form */}
   <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-    <h1 className="text-2xl font-semibold mb-4">Đăng nhập</h1>
-    <form onSubmit={handleSignIn}>
+    <h1 className="text-2xl font-semibold mb-4">Đăng ký</h1>
+    <form onSubmit={handleSignUp}>
       {/* Email Input */}
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-600">
@@ -132,13 +132,13 @@ function SignIn() {
         type="submit"
         className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
       >
-        Đăng nhập
+        Đăng Ký
       </button>
     </form>
     {/* Sign up  Link */}
     <div className="mt-6 text-blue-500 text-center">
-      <Link to={'/sign-up'} className="hover:underline">
-        Đăng ký
+      <Link to={'/sign-in'} className="hover:underline">
+        Đăng nhập
       </Link>
     </div>
   </div>
@@ -146,4 +146,4 @@ function SignIn() {
 </div>)
 
 }
-export default SignIn
+export default SignUp

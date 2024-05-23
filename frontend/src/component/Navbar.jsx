@@ -3,7 +3,6 @@ import { baseUrl, authSignOutUrl } from '../global'
 
 
 function Navbar() {
-  const email = localStorage.getItem('email')
   const isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'))
 
 
@@ -61,7 +60,6 @@ function Navbar() {
           </div>
           <div className='h-2'></div>
           <div className="dropdown-content-left">
-            <span className='text-sm font-bold'>{email}</span>
             <a className=''>Cài đặt</a>
             <a onClick={handleSignOut}>Đăng xuất</a>
           </div>

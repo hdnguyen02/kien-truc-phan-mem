@@ -12,6 +12,7 @@ import StudentSession from './component/StudentSession'
 import AddMember from './component/AddMember'
 import ShareStudentSesion from './component/ShareStudentSession'
 import CreateClass from './component/CreateClass'
+import SignUp from './page/SignUp'
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
   async function checkAuthenticate() {
     const accessToken = localStorage.getItem('accessToken')
     if (!accessToken) return 
-    const url = baseUrl + userInfoUrl
+    const url = baseUrl + '/api/v1/users/info' // thông tin của user => check đăng nhập.
     const jsonRp = await fetch(url, {
       method: 'GET',
       headers: {
@@ -30,6 +31,7 @@ function App() {
     if (!jsonRp.ok) {
       localStorage.setItem('isAuthenticated', false) 
       localStorage.removeItem('accessToken')
+      localStorage.removeItem('email')
       return 
     }
     localStorage.setItem('isAuthenticated', true) 
@@ -62,6 +64,7 @@ function App() {
           </Route>
 
           <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/sign-up' element={<SignUp />} />
         </Routes>
       </div>
     </Router>

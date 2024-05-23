@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("users")
+    @GetMapping("users/info")
     public ResponseEntity<Response> getInfoUser(@RequestParam(required = false) String email) {
         UserDto userDto;
         if (email == null) {
@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("users")
+    @PutMapping("users/info")
     public ResponseEntity<Response> updateUser(UserRequest userRequest) {
         UserDto userDto = userService.updateUser(userRequest);
         Response response = new Response(userDto, "Hiệu chỉnh thành công tin của người dùng", true);

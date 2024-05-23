@@ -8,4 +8,4 @@ function ClassUser() {
       <Outlet />
   </div>)
 }
-export default ClassUser
+export default ClassUser  

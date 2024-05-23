@@ -30,7 +30,6 @@ public class AuthService {
 
 
     private void saveToken(String code, User user){
-        System.out.println(user);
         Token token = Token.builder().code(code).isSignOut(false).user(user).build();
         try {
             tokenDao.save(token);
@@ -40,9 +39,14 @@ public class AuthService {
         }
 
     }
-    
+
 
     public AuthResponse signUp(SignUpRequest signUpRequest) throws Exception {
+        String email = signUpRequest.getEmail();
+        String password = signUpRequest.getPassword();
+        Boolean isRemember = signUpRequest.getIsRemember() != null;
+
+
         Role role = new Role("USER");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -51,8 +55,8 @@ public class AuthService {
         if (userCheck != null) throw new Exception("Email đã được sử dụng!");
         if (signUpRequest.getPassword().length() < 6) throw new Exception("Password cần phải >= 6 ký tự!");
         var user = User.builder()
-                .email(signUpRequest.getEmail())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .email(email)
+                .password(passwordEncoder.encode(password))
                 .name(signUpRequest.getName())
                 .birthdate(signUpRequest.getBirthdate())
                 .gender(signUpRequest.getGender())
@@ -64,7 +68,7 @@ public class AuthService {
                 .build();
 
         try {
-            String accessToken = jwtService.generateToken(userDao.save(user));
+            String accessToken = jwtService.generateToken(userDao.save(user), isRemember);
             // saveToken(accessToken, user);
 
             return AuthResponse.builder()
@@ -78,12 +82,14 @@ public class AuthService {
     }
 
     public AuthResponse signIn(SignInRequest signInRequest) {
+        String email = signInRequest.getEmail();
+        String password = signInRequest.getPassword();
+        Boolean isRemember = signInRequest.getIsRemember() != null;
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                signInRequest.getEmail(), signInRequest.getPassword()
+                email, password
         ));
-
-        User user = userDao.findById(signInRequest.getEmail()).orElseThrow();
-        String accessToken = jwtService.generateToken(user);
+        User user = userDao.findById(email).orElseThrow();
+        String accessToken = jwtService.generateToken(user, isRemember);
         // saveToken(accessToken, user);
 
         return AuthResponse.builder()

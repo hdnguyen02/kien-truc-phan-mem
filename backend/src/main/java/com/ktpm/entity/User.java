@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Column
     private String phone;
 
+    @Column
+    private String avatar;
+
 
 
     @ManyToMany(fetch = FetchType.EAGER)

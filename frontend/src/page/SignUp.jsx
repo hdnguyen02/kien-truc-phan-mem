@@ -63,9 +63,9 @@ function SignUp() {
   }
 
 
-  return (<div className="flex justify-center items-center overflow-hidden" style={{height: 'calc(100vh - 80px)'}}>
+  return (<div className="flex justify-center items-center h-screen">
   {/* Left: Image */}
-  <div className="w-1/2 hidden lg:block" style={{height: 'calc(100vh - 80px)'}}>
+  <div className="w-1/2 hidden lg:block h-screen">
     <img
       src="/touann-gatouillat-vergos-dSBJv66Yjlk-unsplash.jpg"
       alt="login image"

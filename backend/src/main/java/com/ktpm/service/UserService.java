@@ -6,9 +6,17 @@ import com.ktpm.dao.UserDao;
 import com.ktpm.dto.UserDto;
 import com.ktpm.entity.Role;
 import com.ktpm.entity.User;
-import com.ktpm.request.UserRequest;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -24,19 +32,53 @@ public class UserService {
         return new UserDto(userDao.save(user));
     }
 
-    // ví dụ người dùng muốn thay đổi thông tin
-    public UserDto updateUser(UserRequest userRequest) {
+
+    // update thông tin theo.  name, gender, age, phone, dataOfBirth, avatar
+    public UserDto updateUser(String name, String gender, Integer age, String phone, String dataOfBirth, MultipartFile avatar) throws IOException {
         // kiểm tra thông tin nào cập nhập thì cập nhập. thông tin còn lại hông quan tâm
         User user = helper.getUser();
-        if (userRequest.getIsEnabled() != null) {
-            user.setIsEnabled(userRequest.getIsEnabled());
+        if (name!= null) {
+            user.setName(name);
         }
-        if (userRequest.getName() != null) {
-            user.setName(userRequest.getName());
+        if (gender != null) {
+            user.setGender(gender);
         }
-        if (userRequest.getBirthdate() != null) {
-            user.setBirthdate(userRequest.getBirthdate());
+        if (age != null) {
+            user.setAge(age);
         }
+        if (phone != null) {
+            user.setPhone(phone);
+        }
+        if (dataOfBirth != null) {
+            user.setDateOfBirth(dataOfBirth);
+        }
+
+
+        if (avatar != null) {
+            String UPLOAD_DIR = "\\src\\main\\resources\\static\\avatar\\";
+            try {
+                String uploadPath = Paths.get("").toAbsolutePath() + UPLOAD_DIR;
+                String oldAvatar = user.getAvatar();
+                if (oldAvatar != null) {
+                    File oldFileAvatar = new File(uploadPath + oldAvatar);
+                    if (oldFileAvatar.exists()) {
+                        boolean isDeleted = oldFileAvatar.delete();
+                        System.out.println("delete: " + isDeleted + " " + oldFileAvatar);
+                    }
+                }
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("mm-hh-dd-MM-yyyy"));
+                String originalFilename = avatar.getOriginalFilename();
+                String newFilename = timestamp + "-" + originalFilename;
+                String filePath = Paths.get(uploadPath, newFilename).toString();
+                File des = new File(filePath);
+                avatar.transferTo(des);
+                user.setAvatar(newFilename);
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
         return new UserDto(userDao.save(user));
     }
 

@@ -57,14 +57,14 @@ public class AuthService {
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
-                .name(signUpRequest.getName())
-                .birthdate(signUpRequest.getBirthdate())
-                .gender(signUpRequest.getGender())
-                .age(signUpRequest.getAge())
-                .phone(signUpRequest.getPhone())
-                .createAt(helper.formatDate(new Date()))
-                .isEnabled(true)
-                .roles(roles)
+                .name(null)
+                .dateOfBirth(null)
+                    .gender(null)
+                    .age(null)
+                    .phone(null)
+                    .createAt(helper.formatDate(new Date()))
+                    .isEnabled(true)
+                    .roles(roles)
                 .build();
 
         try {

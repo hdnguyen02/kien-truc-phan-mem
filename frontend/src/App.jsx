@@ -13,6 +13,9 @@ import AddMember from './component/AddMember'
 import ShareStudentSesion from './component/ShareStudentSession'
 import CreateClass from './component/CreateClass'
 import SignUp from './page/SignUp'
+import Settings from './page/Settings'
+import InfoUser from './component/InfoUser'
+import ChangePW from './component/ChangePW'
 
 
 function App() {
@@ -32,6 +35,7 @@ function App() {
       localStorage.setItem('isAuthenticated', false) 
       localStorage.removeItem('accessToken')
       localStorage.removeItem('email')
+      window.location.reload('/')
       return 
     }
     localStorage.setItem('isAuthenticated', true) 
@@ -41,7 +45,7 @@ function App() {
 
   useEffect(() => {
     checkAuthenticate()
-  })
+  }, [])
 
 
   return (
@@ -65,6 +69,11 @@ function App() {
 
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/settings' element={<Settings />} >
+            <Route path='info' element={<InfoUser/>}/>
+            <Route path='password' element={<ChangePW/>}/>
+          </Route>
+
         </Routes>
       </div>
     </Router>

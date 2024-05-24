@@ -1,4 +1,4 @@
-input:focus {
+input:focus, select:focus {
     outline: none;
     border: blue solid 0.3px;
 }

@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation  } from 'react-router-dom'
 import { baseUrl, authSignOutUrl } from '../global'
 
 
 function Navbar() {
   const isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'))
+  const location = useLocation()
 
 
   async function handleSignOut() {
@@ -26,7 +27,8 @@ function Navbar() {
   }
 }
 
-  return <nav className="bg-[#F0F6F6] h-20 px-24 flex justify-between items-center">
+  if (location.pathname !== '/sign-in' && location.pathname !== '/sign-up' && !location.pathname.includes('settings')) {
+    return <nav className="bg-[#F0F6F6] h-20 px-24 flex justify-between items-center">
     <div className=''>
       <Link to={"/"} className='text-blue-700 text-3xl font-bold'>
         Online Learning
@@ -60,7 +62,7 @@ function Navbar() {
           </div>
           <div className='h-2'></div>
           <div className="dropdown-content-left">
-            <a className=''>Cài đặt</a>
+            <Link to={'/settings'} className=''>Cài đặt</Link>
             <a onClick={handleSignOut}>Đăng xuất</a>
           </div>
         </div>
@@ -68,6 +70,12 @@ function Navbar() {
       </div>
     )}
   </nav>
+  }
+  else {
+    return null
+  }
+
+  
 }
 
 export default Navbar

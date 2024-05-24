@@ -3,7 +3,9 @@ package com.ktpm.dto;
 import com.ktpm.entity.Role;
 import com.ktpm.entity.User;
 import lombok.*;
+import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 
+import java.nio.file.Paths;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -14,7 +16,7 @@ import java.util.Set;
 public class UserDto {
     private String email;
     private String name;
-    private String birthdate;
+    private String dateOfBirth;
     private String createAt;
     private Boolean isEnabled;
     private Set<Role> roles;
@@ -23,9 +25,10 @@ public class UserDto {
     private String phone;
     private Integer age;
     public UserDto(User user) {
+        avatar = user.getAvatar();
         email = user.getEmail();
         name = user.getName();
-        birthdate = user.getBirthdate();
+        dateOfBirth = user.getDateOfBirth();
         createAt = user.getCreateAt();
         isEnabled = user.getIsEnabled();
         gender = user.getGender();

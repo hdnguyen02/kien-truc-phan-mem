@@ -28,8 +28,8 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String name;
 
-    @Column(length = 10)
-    private String birthdate;
+    @Column(name="date_of_birth", length = 10)
+    private String dateOfBirth;
 
     @Column(name = "create_at", length = 10)
     private String createAt;

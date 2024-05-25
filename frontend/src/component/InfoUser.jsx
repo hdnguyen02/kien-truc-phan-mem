@@ -117,7 +117,7 @@ export default function InfoUser() {
                         </label>
                         <input defaultValue={user.name ? user.name : ''}
                             name="name"
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:bg-white"
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:bg-white"
                             id="name"
                             type="text"
                         />
@@ -131,7 +131,7 @@ export default function InfoUser() {
                         </label>
                         <select defaultValue={user.gender ? user.gender : ''}
                             name="gender"
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:bg-white"
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:bg-white"
                             id="gender"
                         >
                             <option value="null">-</option>
@@ -151,7 +151,7 @@ export default function InfoUser() {
                         <input defaultValue={user.email}
                             readOnly
                             name="email"
-                            className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white"
+                            className="appearance-none block w-full bg-gray-300 text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:bg-white"
                             id="email"
                         >
 
@@ -168,7 +168,7 @@ export default function InfoUser() {
                         </label>
                         <input defaultValue={user.age ? user.age : ''}
                             name="age"
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:bg-white"
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:bg-white"
                             id="age"
                             type="number"
 
@@ -187,7 +187,7 @@ export default function InfoUser() {
                         <input
                             defaultValue={user.phone ? user.phone : ''}
                             name="phone"
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:bg-white"
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:bg-white"
                             id="phone"
                             type="text"
                         />
@@ -200,7 +200,7 @@ export default function InfoUser() {
                             </label>
                             <input defaultValue={user.dateOfBirth ? user.dateOfBirth : ''}     
                                 name="dateOfBirth"
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:bg-white"
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:bg-white"
                                 id="date-of-birth"
                                 type="date"
                             />
@@ -209,10 +209,10 @@ export default function InfoUser() {
                 <div>
                     <label>
                         <span className="mr-4">Tải lên ảnh đại diện</span>
-                        <input onChange={handleUploadAvatar} name="avatar" id="input-avatar" type="file" accept="image/*" />
+                        <input onChange={handleUploadAvatar} name="avatar" id="input-avatar" type="file" accept="image/*" className="border-0" />
                     </label>
                 </div>
-                <div className="mt-4 flex justify-end">
+                <div className="mt-6 flex justify-end">
                     <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Hiệu chỉnh
                     </button>

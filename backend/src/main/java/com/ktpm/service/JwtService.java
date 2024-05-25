@@ -46,6 +46,17 @@ public class JwtService {
                 .compact();
     }
 
+    public String generateTokenForgotPassword(String email) {
+        return Jwts
+                .builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+
+    }
+
     public String generateToken(UserDetails userDetails, Boolean isRemember) {
         return generateToken(new HashMap<>(),userDetails, isRemember);
     }

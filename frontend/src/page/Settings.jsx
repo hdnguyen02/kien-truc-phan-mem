@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { baseUrl, authSignInUrl } from '../global'
 import Fail from '../component/Fail'
-import '../input.css'
 import { Link, Outlet } from 'react-router-dom'
 
 function Settings() {

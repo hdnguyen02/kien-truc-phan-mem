@@ -28,7 +28,7 @@ function Navbar() {
 }
 
   if (location.pathname !== '/sign-in' && location.pathname !== '/sign-up' && !location.pathname.includes('settings')) {
-    return <nav className="bg-[#F0F6F6] h-20 px-24 flex justify-between items-center">
+    return <nav className="bg-[#F0F6F6] h-20 px-24 flex justify-between items-center mb-12">
     <div className=''>
       <Link to={"/"} className='text-blue-700 text-3xl font-bold'>
         Online Learning
@@ -58,7 +58,7 @@ function Navbar() {
         <div className='dropdown'>
           <div className='h-2'></div>
           <div className='dropdown-btn h-9 w-9 rounded-full overflow-hidden cursor-pointer'>
-            <img src="../../public/avatar.avif" className='w-full h-full' alt="" />
+            <img src="/avatar.avif" className='w-full h-full' alt="" />
           </div>
           <div className='h-2'></div>
           <div className="dropdown-content-left">
@@ -66,7 +66,7 @@ function Navbar() {
             <a onClick={handleSignOut}>Đăng xuất</a>
           </div>
         </div>
-        <img src='../../public/down-arrow.png' className='w-4 h-4'></img>
+        <img src='/down-arrow.png' className='w-4 h-4'></img>
       </div>
     )}
   </nav>

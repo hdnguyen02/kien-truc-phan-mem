@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react'
-import { baseUrl, authSignInUrl } from '../global'
+import React, { useRef } from 'react'
+import { baseUrl } from '../global'
 import Fail from '../component/Fail'
-import '../input.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate   } from 'react-router-dom'
 
 function SignIn() {
   const failRef = useRef()
+  const navigate = useNavigate()
   // khởi tạo 1 biến. 
   let isShowPassword = false
   const emailRef = useRef(null)
@@ -43,11 +43,11 @@ function SignIn() {
         throw new Error(response.message)
       } 
       const data = response.data
-      console.log(data)
       localStorage.setItem('accessToken', data.accessToken)
       localStorage.setItem('isAuthenticated', true)
       localStorage.setItem('email', data.user.email)
-      window.location.reload('/')
+      navigate('/')
+
     }
     catch (error) {
       failRef.current.show(error.message, 2000)
@@ -86,7 +86,7 @@ function SignIn() {
           type="email"
           id="email"
           name="email"
-          className="mt-2 w-full border border-gray-300 rounded-md py-2 px-3"
+          className="mt-2 w-full rounded-md py-2 px-3"
           required
         />
       </div>
@@ -101,7 +101,7 @@ function SignIn() {
             type="password"
             id="password"
             name="password"
-            className="w-full border border-gray-300 rounded-md py-2 px-3"
+            className="w-full rounded-md py-2 px-3"
             required
           />
           <img onClick={handleChangeView} id='view-password' src="/hide.png" className='cursor-pointer absolute top-1/2 right-4' style={{transform: 'translateY(-50%)'}} alt="" />
@@ -123,9 +123,9 @@ function SignIn() {
       </div>
       {/* Forgot Password Link */}
       <div className="mb-6 text-blue-500">
-        <a href="#" className="hover:underline">
+        <Link to={'/forgot-password'} className="hover:underline">
           Quên mật khẩu
-        </a>
+        </Link>
       </div>
       {/* Login Button */}
       <button

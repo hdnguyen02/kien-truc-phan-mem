@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { baseUrl, authSignInUrl } from '../global'
 import Fail from '../component/Fail'
-import '../input.css'
 import { Link } from 'react-router-dom'
 
 function SignUp() {
@@ -86,7 +85,7 @@ function SignUp() {
           type="email"
           id="email"
           name="email"
-          className="mt-2 w-full border border-gray-300 rounded-md py-2 px-3"
+          className="mt-2 w-full border-2 rounded-md py-2 px-3"
           required
         />
       </div>
@@ -101,7 +100,7 @@ function SignUp() {
             type="password"
             id="password"
             name="password"
-            className="w-full border border-gray-300 rounded-md py-2 px-3"
+            className="w-full borde rounded-md py-2 px-3"
             required
           />
           <img onClick={handleChangeView} id='view-password' src="/hide.png" className='cursor-pointer absolute top-1/2 right-4' style={{transform: 'translateY(-50%)'}} alt="" />
@@ -123,9 +122,9 @@ function SignUp() {
       </div>
       {/* Forgot Password Link */}
       <div className="mb-6 text-blue-500">
-        <a href="#" className="hover:underline">
+        <Link to={'/forgot-password'} className="hover:underline">
           Quên mật khẩu
-        </a>
+        </Link>
       </div>
       {/* Login Button */}
       <button

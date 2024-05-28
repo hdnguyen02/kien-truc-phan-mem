@@ -89,4 +89,15 @@ public class GroupController {
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
     }
+
+    @GetMapping("/group/{id}/addUser/active/{token}")
+    public ResponseEntity<?> addUserGroup(@PathVariable(name = "id") Long id,
+                                          @PathVariable(name = "token") String token){
+        Response responseData = new Response();
+
+        responseData.setData(groupService.activeUserGroup(id, token));
+        responseData.setSuccess(true);
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+    }
 }

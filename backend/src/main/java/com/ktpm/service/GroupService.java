@@ -9,6 +9,8 @@ import com.ktpm.entity.UserGroup;
 import com.ktpm.exception.GroupAlreadyExistsException;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
+import com.ktpm.sendmail.EmailDetails;
+import com.ktpm.sendmail.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,9 @@ public class GroupService {
 
     @Autowired
     private UserGroupDao userGroupRepository;
+
+    @Autowired
+    private EmailServiceImpl emailService; // = new EmailServiceImpl();
 
     public boolean createGroup(GroupRequest groupRequest) {
         Group group = new Group();
@@ -104,7 +109,15 @@ public class GroupService {
             UserGroup userGroupDB = userGroups.get(0);
             if (!userGroupDB.isActive()) {
                 userGroupDB.setTokenActive(token);
-                userGroupRepository.save(userGroupDB);
+
+
+                Thread threadSaveData = new Thread(()-> {
+                    userGroupRepository.save(userGroupDB);
+                });
+
+                Thread threadSendMail = new Thread(()->{
+                    sendMailAddGroup(userGroupRequest.getGroupId(), userGroupRequest.getEmail(), token);
+                });
             }
 
         } else {
@@ -115,9 +128,45 @@ public class GroupService {
             userGroup.setUser(new User(userGroupRequest.getEmail()));
             userGroup.setGroup(new Group(userGroupRequest.getGroupId()));
             userGroup.setActive(false);
-            userGroupRepository.save(userGroup);
+
+            Thread threadSendMail = new Thread(()->{
+                sendMailAddGroup(userGroupRequest.getGroupId(), userGroupRequest.getEmail(), token);
+            });
+
+            Thread threadSaveData = new Thread(()-> {
+                userGroupRepository.save(userGroup);
+            });
+
+            threadSendMail.start();
+            threadSaveData.start();
+
         }
 
         return true;
     }
+
+    private void sendMailAddGroup(Long groupId, String emailTo, String token) {
+        EmailDetails details = new EmailDetails();
+        details.setSubject("Thư mời tham gia lớp học");
+        details.setRecipient(emailTo);
+        String link = "http://localhost:8080/api/v1/group/"+groupId+"/addUser/active/" + token;
+        details.setMsgBody("<p>Xin chào bạn,</p>" +
+                "<p>Bạn vui lòng nhấn vào <a href=\'"+link+"\'>link này</a> để tham gia lớp học.</p>" +
+                "    <p>Trân trọng,</p>");
+        emailService.sendMailWithAttachment(details);
+    }
+
+    public boolean activeUserGroup(Long groupId, String token) {
+        Optional<UserGroup> userGroupOptional = userGroupRepository.findByGroupAndTokenActive(new Group(groupId), token);
+        if (userGroupOptional.isEmpty()) {
+            return false;
+        }
+
+        UserGroup userGroup = userGroupOptional.get();
+        userGroup.setActive(true);
+        userGroupRepository.save(userGroup);
+        return true;
+    }
+
+
 }

@@ -30,7 +30,7 @@ public class Group extends BaseEntity{
     @OneToMany(mappedBy = "group")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserGroup> userGroups;
 
     public Group(Long id) {

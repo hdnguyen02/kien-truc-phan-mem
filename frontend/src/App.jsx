@@ -17,6 +17,7 @@ import ChangePW from './component/ChangePW'
 import ForgotPW from './page/Forgot-PW'
 import ResetPW from './page/ResetPW'
 import PrivateRoutes from './helper/PrivateRoutes'
+import EditClass from './component/EditClass'
 
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
             <Route path='/classes' element={<ClassUser />}>
               <Route path='' element={<Classes />} />
               <Route path='create' element={<CreateClass />} />
+              <Route path='edit/:id' element={<EditClass />} />
+
               <Route path=':id' element={<DetailClass />} >
                 <Route path='members' element={<MemberClass />} />
                 <Route path='student-session' element={<StudentSession />} />

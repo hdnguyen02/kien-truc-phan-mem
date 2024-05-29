@@ -61,13 +61,24 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/group/user/{id}")
+    @GetMapping("/group/user/{email}")
     public ResponseEntity<?> getGroupByUser(@PathVariable(name = "email") String email) {
         Response responseData = new Response();
 
         List<GroupDto> groupDtos = groupService.getGroupByUser(email);
         responseData.setSuccess(true);
         responseData.setData(groupDtos);
+
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+    }
+
+    @GetMapping("/group/detail/{id}")
+    public ResponseEntity<?> getGroupByIdDetail(@PathVariable(name = "id") Long id) {
+        Response responseData = new Response();
+
+        GroupDto groupDto = groupService.getGroupDetailById(id);
+        responseData.setData(groupDto);
+        responseData.setSuccess(true);
 
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }

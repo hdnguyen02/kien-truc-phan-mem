@@ -1,8 +1,10 @@
 package com.ktpm.service;
 
 import com.ktpm.dao.GroupDao;
+import com.ktpm.dao.UserDao;
 import com.ktpm.dao.UserGroupDao;
 import com.ktpm.dto.GroupDto;
+import com.ktpm.dto.UserDto;
 import com.ktpm.entity.Group;
 import com.ktpm.entity.User;
 import com.ktpm.entity.UserGroup;
@@ -12,6 +14,7 @@ import com.ktpm.request.UserGroupRequest;
 import com.ktpm.sendmail.EmailDetails;
 import com.ktpm.sendmail.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,9 @@ public class GroupService {
 
     @Autowired
     private UserGroupDao userGroupRepository;
+
+    @Autowired
+    private UserDao userRepository;
 
     @Autowired
     private EmailServiceImpl emailService; // = new EmailServiceImpl();
@@ -78,6 +84,16 @@ public class GroupService {
         return GroupDto.mapToGroupDto(group.get());
     }
 
+    public GroupDto getGroupDetailById(Long id) {
+        Optional<Group> group = groupRepository.findById(id);
+        if (group.isEmpty()) {
+            throw new GroupAlreadyExistsException("Group already exist with id "
+                    + id);
+        }
+        return GroupDto.mapToGroupDtoDetail(group.get());
+    }
+
+
     public List<GroupDto> getGroupByUser(String email) {
         List<Group> groups = groupRepository.findByOwner(new User(email));
         List<GroupDto> groupDtos = new ArrayList<>();
@@ -99,7 +115,14 @@ public class GroupService {
         return true;
     }
 
+
     public boolean addUserGroup(UserGroupRequest userGroupRequest) {
+        // check email user
+        Optional<User> userOptional = userRepository.findById(userGroupRequest.getEmail());
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Người dùng có mail không tồn tại!");
+        }
+
         // check is exist
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
                     new Group(userGroupRequest.getGroupId())

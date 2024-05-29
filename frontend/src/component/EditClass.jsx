@@ -1,13 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { baseUrl, version } from "../global";
 import Fail from "./Fail";
 import Success from "./Success";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { data } from "autoprefixer";
+import { useParams } from 'react-router-dom';
 // import React from "react";
 
-const CreateClass = () => {
+const EditClass = () => {
+    const { id } = useParams();
 	let [stateGroup, setStateGroup] = useState({
 		values: {
 			nameGroup: '',
@@ -18,6 +20,48 @@ const CreateClass = () => {
 			descGroup: ''
 		}
 	});
+
+    const getInfoGroupById = async (groupId) => {
+        try {
+            let token = localStorage.getItem("accessToken");
+            let emailUser = localStorage.getItem("email");
+
+            const url = baseUrl + '/api/v1/group/' + groupId;
+            
+            let jsonRp = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            const response = await jsonRp.json()
+            if (!jsonRp.ok) {
+                console.log("vào lỗi")
+                throw new Error(response.message)
+            }
+            console.log(response.data);
+            let {name, description} = response.data;
+            console.log(description);
+            setStateGroup({
+                ...stateGroup,
+                values: {
+                    nameGroup: name,
+                    descGroup: description
+                }
+            })
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getInfoGroupById(id)
+        return () => {
+            
+        };
+    }, []);
 
 	const navigate = useNavigate();
 
@@ -67,6 +111,7 @@ const CreateClass = () => {
 			let token = localStorage.getItem("accessToken");
 			let emailUser = localStorage.getItem("email");
 			let data = {
+                id: id,
 				name: values.nameGroup,
 				description: values.descGroup,
 				email: emailUser,
@@ -76,7 +121,7 @@ const CreateClass = () => {
 
 			const url = baseUrl + '/api/v1/group';
 			let jsonRp = await fetch(url, {
-        method: "POST",
+        method: "PUT",
         headers: {
 					"Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -104,7 +149,7 @@ const CreateClass = () => {
           <img className="w-5 h-5" src="../../public/back.png" alt="" />
           <span>Danh sách lớp</span>
         </Link>
-        <h3 className="font-medium text-gray-900">Tạo lớp</h3>
+        <h3 className="font-medium text-gray-900">Chỉnh sửa lớp</h3>
       </div>
 
       <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -144,7 +189,7 @@ const CreateClass = () => {
               className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 							onClick={()=> {handleCreateGroup()}}
 						>
-              Tạo
+              Chỉnh sửa
             </button>
           </div>
         </div>
@@ -153,7 +198,7 @@ const CreateClass = () => {
   );
 };
 
-export default CreateClass;
+export default EditClass;
 
 // function CreateClass() {
 

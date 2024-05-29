@@ -1,11 +1,53 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import { baseUrl, version } from "../global";
+const DetailClass = () => {
+    const { id } = useParams();
 
-function DetailClass() {
+    let [stateGroup, setStateGroup] = useState({});
+    let [stateUserGroup, setStateUserGroup] = useState({});
+
+    const getInfoGroupById = async (groupId) => {
+        try {
+            let token = localStorage.getItem("accessToken");
+            let emailUser = localStorage.getItem("email");
+
+            const url = baseUrl + '/api/v1/group/detail/' + groupId;
+            
+            let jsonRp = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            const response = await jsonRp.json()
+            if (!jsonRp.ok) {
+                console.log("vào lỗi")
+                throw new Error(response.message)
+            }
+            console.log(response.data);
+            
+            setStateGroup(response.data);
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getInfoGroupById(id)
+        return () => {
+            
+        };
+    }, []);
+
+
     return <div>
         <div className='flex items-center gap-x-3'>
             <img className='w-12 h-12' src="/group.png" alt="" />
-            <span className='text-xl font-medium'>Lớp 12A05</span>
+            <span className='text-xl font-medium'>{stateGroup.name}</span>
         </div>
      
         <div className='mt-4'>
@@ -18,7 +60,7 @@ function DetailClass() {
                     <img src="/book.png" className='w-6' alt="" />
                     <span>Chia sẻ học phần</span>
                 </Link>
-                <Link to={"/classes/1/members"} className='font-medium flex gap-x-2'>
+                <Link to={`/classes/${id}/members`} className='font-medium flex gap-x-2' state={{stateGroup}}>
                     <img src="/group.png" className='w-6' alt="" />
                     <span>Thành viên</span> 
                 </Link>
@@ -47,7 +89,7 @@ function DetailClass() {
                     </div>
                     <div className='flex gap-x-3 items-center'>
                         <img src="/group.png" className='w-8 h-8' alt="" />
-                        <span>25 thành viên</span>
+                        <span>{stateGroup.quantity} thành viên</span>
                     </div>
                     
                 </div>

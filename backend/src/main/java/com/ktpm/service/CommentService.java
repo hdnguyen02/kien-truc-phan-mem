@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class CommentService {
     @Autowired
-    CommentDao commentRepository;
+    private CommentDao commentRepository;
 
     public boolean createComment(CommentRequest commentRequest) {
         Comment comment = new Comment();
@@ -45,7 +45,7 @@ public class CommentService {
     }
 
     public List<CommentDto> getCommentByGroupId(Long id) {
-        List<Comment> comments = commentRepository.findByCommentIsNull();
+        List<Comment> comments = commentRepository.findByCommentIsNullAndGroup(new Group(id));
         List<CommentDto> commentDtos = new ArrayList<>();
 
         comments.forEach(comment -> {

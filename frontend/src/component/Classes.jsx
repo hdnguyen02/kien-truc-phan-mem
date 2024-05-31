@@ -11,7 +11,14 @@ const Classes = () => {
     let [state, setState] = useState({
         classList: []
     });
-    let [stateGroup, setStateGroup] = useState({});
+    let [stateGroup, setStateGroup] = useState({
+      classList: []
+    });
+
+    let [stateClassAttendance, setStateClassAttendance] = useState({
+      classList: []
+    });
+
     const [open, setOpen] = useState(false)
     const navigate = useNavigate();
 
@@ -45,6 +52,37 @@ const Classes = () => {
         }
     }
 
+    const getDataClassAttendance = async () => {
+      try {
+          let token = localStorage.getItem("accessToken");
+          let emailUser = localStorage.getItem("email");
+
+          const url = baseUrl + '/api/v1/group/attendance/' + emailUser;
+          
+          let jsonRp = await fetch(url, {
+              method: 'GET',
+              headers: {
+                  'Authorization': `Bearer ${token}`
+              },
+          });
+
+          const response = await jsonRp.json()
+          if (!jsonRp.ok) {
+              console.log("vào lỗi")
+              throw new Error(response.message)
+          }
+          console.log("getDataClassAttendance")
+          console.log(response.data)
+          setStateClassAttendance({
+              ...stateClassAttendance,
+              classList: response.data
+          })
+
+      } catch (error) {
+          console.log(error.message);
+      }
+  }
+
     const handleDeleteClass = async (group)=> {
       try {
         let token = localStorage.getItem("accessToken");
@@ -71,12 +109,22 @@ const Classes = () => {
       setOpen(false);
     }
 
-    useEffect(()=>{
-        getDataClass()
-        return ()=> {
+    // useEffect(()=>{
+    //     getDataClass(),
+    //     renderClassAttendance()
+    //     return ()=> {
 
-        };
-    }, [])
+    //     };
+    // }, [])
+
+    useEffect(() => {
+      getDataClassAttendance();
+      getDataClass();
+      return () => {
+          // Cleanup code if necessary
+      };
+  }, []);
+
 
     const renderClass = () => {
        return state.classList.map((item, index) => {
@@ -106,6 +154,26 @@ const Classes = () => {
 
        })
     }
+
+    const renderClassAttendance = () => {
+      return stateClassAttendance.classList.map((item, index) => {
+           return <div className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4' key={index}
+           >
+               <div className='deck-left flex gap-x-6'>
+                   <span className='text-xl flex items-center font-medium min-w-40'>{item.name}</span>
+                   <span className='flex items-center min-w-12'>{item.quantity} thành viên</span>
+               </div>
+               <div className='deck-right flex gap-x-12 items-center'>
+                    <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+                      onClick={()=>{navigate(`/classes/${item.id}`)}}
+                    >
+                        Xem
+                    </button>
+                </div>
+           </div>
+
+      });
+   }
 
     return (
       <div>
@@ -159,39 +227,15 @@ const Classes = () => {
           {/* render lớp */}
           <div className="mt-8">
             {renderClass()}
-            {/* <div className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4'>
-                        <div className='deck-left flex gap-x-6'>
-                            <span className='text-xl flex items-center font-medium min-w-40'>12A05</span>
-                            <span className='flex items-center min-w-12'>25 thành viên</span>
-                        </div>
-                        <div className='deck-right flex gap-x-12 items-center'>
-                            <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
-                                
-                            >
-                                Xóa lớp
-                            </button>
-                            <button className='bg-ctred hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-900 hover:border-red-600 rounded'>
-                                Chỉnh sửa
-                            </button>       
-                            
-                        </div>
-                    </div>
+          </div>
+          <div></div>
+        </div>
 
-                    <div className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4'>
-                        <div className='deck-left flex gap-x-6'>
-                            <span className='text-xl flex items-center font-medium min-w-40'>12A07</span>
-                            <span className='flex items-center min-w-12'>13 thành viên</span>
-                        </div>
-                        <div className='deck-right flex gap-x-12 items-center'>
-                            <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
-                                Xóa lớp
-                            </button>
-                            <button className='bg-ctred hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-900 hover:border-red-600 rounded'>
-                                Chỉnh sửa
-                            </button>       
-                            
-                        </div>
-                    </div> */}
+        <div>
+          <h3 className="font-medium text-xl text-blue-600">Lớp đã tham gia</h3>
+          {/* render lớp */}
+          <div className="mt-8">
+            {renderClassAttendance()}
           </div>
           <div></div>
         </div>

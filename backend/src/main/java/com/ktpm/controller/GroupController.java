@@ -1,6 +1,7 @@
 package com.ktpm.controller;
 
 import com.ktpm.dto.GroupDto;
+import com.ktpm.dto.UserDto;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
 import com.ktpm.response.Response;
@@ -61,6 +62,17 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
+    @GetMapping("/group/usersActive/{id}")
+    public ResponseEntity<?> getUserOfGroupById(@PathVariable(name = "id") Long id) {
+        Response responseData = new Response();
+
+        List<UserDto> userDtos= groupService.getUserOfGroup(id);
+        responseData.setData(userDtos);
+        responseData.setSuccess(true);
+
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+    }
+
     @GetMapping("/group/user/{email}")
     public ResponseEntity<?> getGroupByUser(@PathVariable(name = "email") String email) {
         Response responseData = new Response();
@@ -91,6 +103,15 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
+//    @DeleteMapping("/group/delUser")
+    @PostMapping("/group/delUser")
+    public ResponseEntity<?> deleteUserGroup(@RequestBody UserGroupRequest userGroupRequest) {
+        Response responseData = new Response();
+        responseData.setData(groupService.deleteUserGroupById(userGroupRequest));
+        responseData.setSuccess(true);
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+    }
+
     @PostMapping("/group/addUser")
     public ResponseEntity<?> addUserGroup(@RequestBody UserGroupRequest userGroupRequest){
         Response responseData = new Response();
@@ -107,6 +128,16 @@ public class GroupController {
         Response responseData = new Response();
 
         responseData.setData(groupService.activeUserGroup(id, token));
+        responseData.setSuccess(true);
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+    }
+
+    @GetMapping("/group/attendance/{email}")
+    public ResponseEntity<?> getGroupAttendance(@PathVariable(name = "email") String email){
+        Response responseData = new Response();
+
+        responseData.setData(groupService.getGroupAttend(email));
         responseData.setSuccess(true);
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);

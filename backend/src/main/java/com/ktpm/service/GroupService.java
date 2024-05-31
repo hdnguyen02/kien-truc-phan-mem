@@ -93,6 +93,23 @@ public class GroupService {
         return GroupDto.mapToGroupDtoDetail(group.get());
     }
 
+    public List<UserDto> getUserOfGroup(Long id){
+        List<UserDto> userDtos = new ArrayList<>();
+        Optional<Group> group = groupRepository.findById(id);
+        if (group.isEmpty()) {
+            throw new GroupAlreadyExistsException("Group already exist with id "
+                    + id);
+        }
+
+        List<UserGroup> userActiveGroup = group.get().getUserGroups().stream().filter(ele -> ele.isActive()).toList();
+        userActiveGroup.forEach(ele-> {
+            userDtos.add(new UserDto(ele.getUser()));
+        });
+
+
+        return userDtos;
+    }
+
 
     public List<GroupDto> getGroupByUser(String email) {
         List<Group> groups = groupRepository.findByOwner(new User(email));
@@ -128,7 +145,9 @@ public class GroupService {
                     new Group(userGroupRequest.getGroupId())
                 );
         String token = UUID.randomUUID().toString();
+        System.out.println("GroupID: " + userGroupRequest.getGroupId());
         if (userGroups.size() > 0) {
+            System.out.println("OK1");
             UserGroup userGroupDB = userGroups.get(0);
             if (!userGroupDB.isActive()) {
                 userGroupDB.setTokenActive(token);
@@ -145,7 +164,7 @@ public class GroupService {
 
         } else {
             UserGroup userGroup =  new UserGroup();
-
+            System.out.println("OK2");
             userGroup.setTokenActive(token);
 
             userGroup.setUser(new User(userGroupRequest.getEmail()));
@@ -191,5 +210,32 @@ public class GroupService {
         return true;
     }
 
+    public boolean deleteUserGroupById(UserGroupRequest userGroupRequest) {
+        Optional<User> userOptional = userRepository.findById(userGroupRequest.getEmail());
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Người dùng có mail không tồn tại!");
+        }
+        System.out.println(userGroupRequest.getGroupId());
+        List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
+                new Group(userGroupRequest.getGroupId())
+        );
+        if (userGroups.size() == 0 ){
+            throw new UsernameNotFoundException("Người dùng có mail không có trong nhóm!");
+        }
+
+        userGroupRepository.delete(userGroups.get(0));
+        return true;
+    }
+
+    public List<GroupDto> getGroupAttend(String email) {
+        List<GroupDto> groupDtos = new ArrayList<>();
+
+        List<UserGroup> userGroups = userGroupRepository.findByUserAndIsActive(new User(email), true);
+        userGroups.forEach(ele -> {
+            groupDtos.add(GroupDto.mapToGroupDto(ele.getGroup()));
+        });
+
+        return groupDtos;
+    }
 
 }

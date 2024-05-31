@@ -18,6 +18,7 @@ import ForgotPW from './page/Forgot-PW'
 import ResetPW from './page/ResetPW'
 import PrivateRoutes from './helper/PrivateRoutes'
 import EditClass from './component/EditClass'
+import CommentClass from './component/CommentClass'
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
                 <Route path='student-session' element={<StudentSession />} />
                 <Route path='add-member' element={<AddMember />} />
                 <Route path='share-student-session' element={<ShareStudentSesion />} />
+                <Route path='comments' element={<CommentClass />} />
               </Route>
             </Route>
 

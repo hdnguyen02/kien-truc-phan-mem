@@ -14,4 +14,6 @@ public interface UserGroupDao extends JpaRepository<UserGroup, Long> {
     List<UserGroup> findByUserAndGroup(User user, Group group);
 
     Optional<UserGroup> findByGroupAndTokenActive(Group group, String token);
+
+    List<UserGroup> findByUserAndIsActive(User user, boolean isActive);
 }

@@ -18,6 +18,7 @@ import Settings from './page/Settings'
 import InfoUser from './component/InfoUser'
 import ChangePW from './component/ChangePW'
 import ForgotPW from './page/Forgot-PW'
+import CommentClass from "./component/CommentClass";
 
 function Routes() {
     return (
@@ -36,6 +37,7 @@ function Routes() {
                             <Route path='student-session' element={<StudentSession />} />
                             <Route path='add-member' element={<AddMember />} />
                             <Route path='share-student-session' element={<ShareStudentSesion />} />
+                            <Route path='comment' element={<CommentClass />} />
                         </Route>
                     </Route>
 

@@ -2,6 +2,8 @@ package com.ktpm.controller;
 
 import com.ktpm.dto.GroupDto;
 import com.ktpm.dto.UserDto;
+import com.ktpm.mylogger.LogLevel;
+import com.ktpm.mylogger.Logger;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
 import com.ktpm.response.Response;
@@ -21,6 +23,7 @@ import java.util.List;
 public class GroupController {
     @Autowired
     private GroupService groupService;
+    private Logger logger = Logger.getInstance();
 
     @PostMapping("/group")
     public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest){
@@ -28,6 +31,8 @@ public class GroupController {
 
         responseData.setData(groupService.createGroup(groupRequest));
         responseData.setSuccess(true);
+
+        logger.log(LogLevel.INFO, "CREATE GROUP " + groupRequest.getName() + " IS SUCCESSFULLY");
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
     }
@@ -38,6 +43,7 @@ public class GroupController {
         Response responseData = new Response();
         responseData.setData(groupService.updateGroup(groupRequest));
         responseData.setSuccess(true);
+        logger.log(LogLevel.INFO, "UPDATE GROUP " + groupRequest.getName() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
@@ -46,7 +52,7 @@ public class GroupController {
         Response responseData = new Response();
         responseData.setSuccess(true);
 
-
+        logger.log(LogLevel.INFO, "GET GROUPS " +  " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
     }
 
@@ -58,7 +64,7 @@ public class GroupController {
         GroupDto groupDto = groupService.getGroupById(id);
         responseData.setData(groupDto);
         responseData.setSuccess(true);
-
+        logger.log(LogLevel.INFO, "GET GROUP ID " + id.toString() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
@@ -69,7 +75,6 @@ public class GroupController {
         List<UserDto> userDtos= groupService.getUserOfGroup(id);
         responseData.setData(userDtos);
         responseData.setSuccess(true);
-
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
@@ -109,6 +114,7 @@ public class GroupController {
         Response responseData = new Response();
         responseData.setData(groupService.deleteUserGroupById(userGroupRequest));
         responseData.setSuccess(true);
+        logger.log(LogLevel.INFO, "DELETE USER " + userGroupRequest.getEmail() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
@@ -129,7 +135,7 @@ public class GroupController {
 
         responseData.setData(groupService.activeUserGroup(id, token));
         responseData.setSuccess(true);
-
+        logger.log(LogLevel.INFO, "ACTIVE USER " + id.toString() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
     }
 

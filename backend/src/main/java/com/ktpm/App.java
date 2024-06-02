@@ -2,6 +2,8 @@ package com.ktpm;
 
 import com.ktpm.dao.RoleDao;
 import com.ktpm.entity.Role;
+import com.ktpm.mylogger.LogLevel;
+import com.ktpm.mylogger.Logger;
 import com.ktpm.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -15,15 +17,9 @@ import java.util.List;
 
 @SpringBootApplication
 public class App {
-
-
-
-
-
-
-
-
+	private static final Logger logger = Logger.getInstance();
 	public static void main(String[] args) {
+		Logger.getInstance().log(LogLevel.INFO, "START APPLICATION");
 		SpringApplication.run(App.class, args);
 	}
 	@Bean

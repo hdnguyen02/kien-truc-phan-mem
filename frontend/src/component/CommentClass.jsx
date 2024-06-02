@@ -37,8 +37,6 @@ const CommentClass = () => {
         console.log("vào lỗi");
         throw new Error(response.message);
       }
-      console.log(response.data);
-      console.log(456);
       dispatch({
         type: GET_COMMENT_OF_GROUP,
         payload: response.data,
@@ -51,7 +49,6 @@ const CommentClass = () => {
 
   const handleChangeInputGroup = (e) => {
     let { value, name } = e.target;
-    console.log(name + ": " + value);
 
     let newValue = {
       ...stateComment.values,
@@ -83,7 +80,6 @@ const CommentClass = () => {
 
   const handleCreateComment = async () => {
     // e.preventDefault();
-    console.log('add comment')
     let isValid = true;
     let { values, errors } = stateComment;
 
@@ -93,7 +89,6 @@ const CommentClass = () => {
         break;
       }
     }
-    console.log(isValid);
     if (isValid) {
       let token = localStorage.getItem("accessToken");
       let emailUser = localStorage.getItem("email");
@@ -103,8 +98,6 @@ const CommentClass = () => {
         parentId: values.parentId,
         content: values.content
       };
-      // console.log(values.)
-      console.log(JSON.stringify(data));
 
       const url = baseUrl + "/api/v1/comment";
       let jsonRp = await fetch(url, {

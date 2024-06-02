@@ -40,9 +40,7 @@ const EditClass = () => {
                 console.log("vào lỗi")
                 throw new Error(response.message)
             }
-            console.log(response.data);
             let {name, description} = response.data;
-            console.log(description);
             setStateGroup({
                 ...stateGroup,
                 values: {
@@ -67,7 +65,6 @@ const EditClass = () => {
 
 	const handleChangeInputGroup = (e)=> {
 		let {value, name} = e.target;
-		console.log(name + ": " + value);
 
 		let newValue = {
 			...stateGroup.values, [name]: value
@@ -98,15 +95,12 @@ const EditClass = () => {
 	const handleCreateGroup = async ()=>{
 		let isValid = true;
 		let {values, errors} = stateGroup;
-		console.log('---')
-		console.log(errors)
 		for(let key in errors) {
 			if (errors[key] !== '') {
 				isValid = false;
 				break;
 			}
 		}
-		console.log(isValid)
 		if (isValid) {
 			let token = localStorage.getItem("accessToken");
 			let emailUser = localStorage.getItem("email");
@@ -116,8 +110,6 @@ const EditClass = () => {
 				description: values.descGroup,
 				email: emailUser,
 			}
-
-			console.log(JSON.stringify(data))
 
 			const url = baseUrl + '/api/v1/group';
 			let jsonRp = await fetch(url, {

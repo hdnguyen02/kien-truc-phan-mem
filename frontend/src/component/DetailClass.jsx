@@ -16,7 +16,6 @@ const DetailClass = () => {
     let [stateUserGroup, setStateUserGroup] = useState({});
     
     const getInfoGroupById = async () => {
-        console.log(123);
         try {
             let token = localStorage.getItem("accessToken");
             let emailUser = localStorage.getItem("email");
@@ -35,13 +34,10 @@ const DetailClass = () => {
                 console.log("vào lỗi")
                 throw new Error(response.message)
             }
-            console.log(response.data);
-            console.log(456);
             dispatch({
                 type: GET_INFO_GROUP_ID,
                 payload: response.data
             });
-            console.log("Comment");
             // setStateGroup(response.data);
 
         } catch (error) {

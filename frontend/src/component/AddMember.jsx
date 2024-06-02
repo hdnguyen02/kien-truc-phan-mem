@@ -10,6 +10,7 @@ import {
 } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
+import { GET_INFO_GROUP_ID } from "../redux/constants/InfoGroupContant";
 
 const AddMember = () => {
   const { id } = useParams();
@@ -31,7 +32,6 @@ const AddMember = () => {
   });
 
   const getInfoGroupById = async () => {
-    console.log(123);
     try {
       let token = localStorage.getItem("accessToken");
       let emailUser = localStorage.getItem("email");
@@ -47,16 +47,12 @@ const AddMember = () => {
 
       const response = await jsonRp.json();
       if (!jsonRp.ok) {
-        console.log("vào lỗi");
         throw new Error(response.message);
       }
-      console.log(response.data);
-      console.log(456);
       dispatch({
         type: GET_INFO_GROUP_ID,
         payload: response.data,
       });
-      console.log(456);
       // setStateGroup(response.data);
     } catch (error) {
       console.log(error.message);
@@ -70,7 +66,6 @@ const AddMember = () => {
 
   const handleChangeInputGroup = (e) => {
     let { value, name } = e.target;
-    console.log(name + ": " + value);
 
     let newValue = {
       ...stateAddUser.values,
@@ -117,7 +112,6 @@ const AddMember = () => {
         break;
       }
     }
-    console.log(isValid);
     if (isValid) {
       let token = localStorage.getItem("accessToken");
       // let emailUser = localStorage.getItem("email");
@@ -126,7 +120,6 @@ const AddMember = () => {
         groupId: id,
       };
       // console.log(values.)
-      console.log(JSON.stringify(data));
 
       const url = baseUrl + "/api/v1/group/addUser";
       let jsonRp = await fetch(url, {
@@ -140,7 +133,6 @@ const AddMember = () => {
 
       const response = await jsonRp.json();
       if (!jsonRp.ok) {
-        console.log("vào lỗi");
         //   throw new Error(response.message);
         setStateDialog({
           title: "Thông báo lỗi",

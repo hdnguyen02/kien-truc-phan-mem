@@ -23,7 +23,6 @@ const CreateClass = () => {
 
 	const handleChangeInputGroup = (e)=> {
 		let {value, name} = e.target;
-		console.log(name + ": " + value);
 
 		let newValue = {
 			...stateGroup.values, [name]: value
@@ -54,15 +53,12 @@ const CreateClass = () => {
 	const handleCreateGroup = async ()=>{
 		let isValid = true;
 		let {values, errors} = stateGroup;
-		console.log('---')
-		console.log(errors)
 		for(let key in errors) {
 			if (errors[key] !== '') {
 				isValid = false;
 				break;
 			}
 		}
-		console.log(isValid)
 		if (isValid) {
 			let token = localStorage.getItem("accessToken");
 			let emailUser = localStorage.getItem("email");
@@ -72,7 +68,6 @@ const CreateClass = () => {
 				email: emailUser,
 			}
 
-			console.log(JSON.stringify(data))
 
 			const url = baseUrl + '/api/v1/group';
 			let jsonRp = await fetch(url, {

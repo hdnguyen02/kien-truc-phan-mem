@@ -25,10 +25,8 @@ const MemberClass = (props) => {
 
   const dispatch = useDispatch();
   const { infoGroup } = useSelector((state) => state.InfoGroupReducer);
-  console.log(infoGroup);
 
   const getInfoGroupById = async () => {
-    console.log(123);
     try {
       let token = localStorage.getItem("accessToken");
       let emailUser = localStorage.getItem("email");
@@ -44,16 +42,12 @@ const MemberClass = (props) => {
 
       const response = await jsonRp.json();
       if (!jsonRp.ok) {
-        console.log("vào lỗi");
         throw new Error(response.message);
       }
-      console.log(response.data);
-      console.log(456);
       dispatch({
         type: GET_INFO_GROUP_ID,
         payload: response.data,
       });
-      console.log(456);
       // setStateGroup(response.data);
     } catch (error) {
       console.log(error.message);
@@ -75,7 +69,6 @@ const MemberClass = (props) => {
         email: stateUserGroupSelected.email,
         groupId: id,
       };
-      console.log(data);
       let jsonRp = await fetch(url, {
         method: "POST",
         headers: {
@@ -87,7 +80,6 @@ const MemberClass = (props) => {
 
       const response = await jsonRp.json();
       if (!jsonRp.ok) {
-        console.log("vào lỗi");
         throw new Error(response.message);
       }
       // getDataClass();
@@ -101,7 +93,7 @@ const MemberClass = (props) => {
 
   const renderMember = () => {
     return infoGroup.userGroups.map((item, index) => {
-      return (
+      return ( 
         <div
           className="bg-[#EDEFFF] mt-4 rounded-lg px-8 py-6 flex items-center justify-between"
           key={index}
@@ -123,15 +115,14 @@ const MemberClass = (props) => {
     });
   };
 
-  return (
-    <div>
+  return (<div>
       <div>
         <div className="bg-[#F0F6F6] mt-4 rounded-lg px-8 py-6 flex items-center justify-between">
-          <span className="font-medium text-xl">{infoGroup.owner.email}</span>
+          {infoGroup && infoGroup.owner ? <span className="font-medium text-xl">{infoGroup.owner.email}</span> : ""}
           <span>Giáo viên</span>
           <img className="w-6 h-6" src="/key.png" alt="" />
         </div>
-        {renderMember()}
+        {infoGroup && infoGroup.userGroups ? renderMember() : ''}
         {/* <div className='bg-[#EDEFFF] mt-4 rounded-lg px-8 py-6 flex items-center justify-between'>
                 <span className='font-medium text-xl'>
                     Đức Nguyên

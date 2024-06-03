@@ -17,12 +17,40 @@ import ChangePW from './component/ChangePW'
 import ForgotPW from './page/Forgot-PW'
 import ResetPW from './page/ResetPW'
 import PrivateRoutes from './helper/PrivateRoutes'
-import EditClass from './component/EditClass'
-import CommentClass from './component/CommentClass'
+import Deck from './page/Deck'
+import Decks from './component/Decks.jsx'
+import FlipCard from './page/FlipCard'
+import Contact from './page/Contact'
+import Card from './page/Card'
+import Cards from './component/Cards'
+import { useEffect } from 'react'
+import { fetchData } from './global'
+
 
 
 function App() {
+  async function checkAuth() {
+    const subUrl = '/users/info'
+    try {
+      await fetchData(subUrl, 'GET')
+    }
+    catch (error) {
+      if (error.code == 400) { // token không hợp lệ
+        localStorage.clear()
+        window.location.reload() // load lại áp dụng cho trang
+      }
+    }
+  }
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
+      checkAuth()
+    }
+    else {
+      localStorage.clear()
+    }
+  }, [])
 
   return (
     <div>
@@ -36,30 +64,38 @@ function App() {
             <Route path='/classes' element={<ClassUser />}>
               <Route path='' element={<Classes />} />
               <Route path='create' element={<CreateClass />} />
-              <Route path='edit/:id' element={<EditClass />} />
-
               <Route path=':id' element={<DetailClass />} >
                 <Route path='members' element={<MemberClass />} />
                 <Route path='student-session' element={<StudentSession />} />
                 <Route path='add-member' element={<AddMember />} />
                 <Route path='share-student-session' element={<ShareStudentSesion />} />
-                <Route path='comments' element={<CommentClass />} />
               </Route>
+            </Route>
+
+            <Route path='/decks' element={<Deck />}>
+              <Route path='' element={<Decks />} />
+              <Route path=':id/learn-cards' element={<FlipCard />} />
+            </Route>
+
+            <Route path="/cards" element={<Card />} >
+              <Route path='' element={<Cards />} />
             </Route>
 
             {/* settings */}
             <Route path='/settings' element={<Settings />} >
-              <Route path='info'  element={<InfoUser />} />
+              <Route path='info' element={<InfoUser />} />
               <Route path='password' element={<ChangePW />} />
             </Route>
           </Route>
-          
+
           {/* public */}
-          <Route path='/' exact element={<Home />}  />
-          <Route path='/sign-in' element={<SignIn />}  />
+          <Route path='/' exact element={<Home />} />
+          <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/forgot-password' element={<ForgotPW />} />
-          <Route path='/reset-password' element={<ResetPW />}  />
+          <Route path='/reset-password' element={<ResetPW />} />
+          <Route path='/contact' element={<Contact />} />
+
         </Routes>
       </Router>
     </div>

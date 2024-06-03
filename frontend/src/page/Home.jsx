@@ -1,10 +1,10 @@
-import React from 'react'
+
 
 
 function Home() {
   return (
-    <div>
-      Trang home
+    <div className="mt-[80px] w-full">
+       <img className="w-full h-full" src="/study.jpg" alt=""/>
     </div>
   )
 }

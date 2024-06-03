@@ -113,7 +113,6 @@ const DetailClass = () => {
                     
                 </div>
             </div>
-        
         </div>
 
     </div>

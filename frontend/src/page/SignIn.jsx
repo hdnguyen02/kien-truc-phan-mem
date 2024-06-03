@@ -1,12 +1,11 @@
 import React, { useRef } from 'react'
-import { baseUrl } from '../global'
+import { baseUrl, fetchDataWithoutAccessToken } from '../global'
 import Fail from '../component/Fail'
 import { Link, useNavigate   } from 'react-router-dom'
 
 function SignIn() {
   const failRef = useRef()
   const navigate = useNavigate()
-  // khởi tạo 1 biến. 
   let isShowPassword = false
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
@@ -25,33 +24,27 @@ function SignIn() {
       elViewPassword.src = '/view.png'
     }
     isShowPassword = !isShowPassword
-
   }
 
   async function postSignIn(email, password, isRemember) {
-    const url = baseUrl + '/api/v1/auth/sign-in'
-    try {
-      const jsonRp = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password,isRemember })
-      })
-      const response = await jsonRp.json()
-      if (!jsonRp.ok) {
-        throw new Error(response.message)
-      } 
+
+
+    const subUrl = `/auth/sign-in`
+    const body = { 
+      email, password, isRemember
+    }
+
+    try { 
+      const response = await fetchDataWithoutAccessToken(subUrl, 'POST', body)
       const data = response.data
       localStorage.setItem('accessToken', data.accessToken)
       localStorage.setItem('isAuthenticated', true)
       localStorage.setItem('email', data.user.email)
       navigate('/')
-
     }
     catch (error) {
       failRef.current.show(error.message, 2000)
-    }
+    }  
   }
   function handleSignIn(event) {
     event.preventDefault()

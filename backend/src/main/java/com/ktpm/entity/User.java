@@ -50,6 +50,9 @@ public class User implements UserDetails {
     private String avatar;
 
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Deck> decks;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "users_roles", joinColumns = @JoinColumn(name = "email_user"),inverseJoinColumns = @JoinColumn(name = "name_role"))

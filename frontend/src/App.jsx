@@ -4,7 +4,6 @@ import SignIn from './page/SignIn'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ClassUser from './page/ClassUser'
 import Classes from './component/Classes'
-import DetailClass from './component/x.jsx'
 import MembersOwnerClass from './component/MembersOwnerClass.jsx'
 import StudentSession from './component/StudentSession'
 import ShareStudentSesion from './component/ShareStudentSession'
@@ -25,10 +24,11 @@ import Cards from './component/Cards'
 import { useEffect } from 'react'
 import { fetchData } from './global'
 import OwnerClasses from './component/OwnerClasses.jsx'
-import AttendanceClass from './component/AttendanceClass.jsx'
+import AttendanceClasses from './component/AttendanceClasses.jsx'
 import DetailOwnerClass from './component/DetailOwnerClass.jsx'
 import AddMember from './component/AddMember'
 import CommentClass from './component/CommentClass.jsx'
+import MembersAttendanceClass from './component/MembersAttendanceClass.jsx'
 
 
 
@@ -70,9 +70,16 @@ function App() {
                 <Route path='owner' element={<OwnerClasses />}>
                  
                 </Route>
-                <Route path='attendance' element={<AttendanceClass />} />
+                <Route path='attendance' element={<AttendanceClasses />}>
+                  
+                </Route>
               </Route>
 
+
+              <Route path='detail-attendance/:id' element={<DetailOwnerClass></DetailOwnerClass>}>
+                  <Route path='members' element={<MembersOwnerClass />} />
+                  <Route path='comments' element={<CommentClass />} />
+              </Route>
               <Route path='detail-owner/:id' element={<DetailOwnerClass></DetailOwnerClass>}>
 
                   {/* Thêm người dùng vào */}

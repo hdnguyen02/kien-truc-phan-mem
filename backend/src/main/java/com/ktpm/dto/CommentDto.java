@@ -16,7 +16,7 @@ public class CommentDto {
     private Long id;
     private String content;
     private UserDto user;
-    private List<CommentDto> commentChild = new ArrayList<>();
+    private List<CommentDto> commentsChild = new ArrayList<>();
     private Date created;
 
     public static CommentDto mapToCommentDto(Comment comment){
@@ -28,9 +28,9 @@ public class CommentDto {
 
         List<CommentDto> commentDtos = new ArrayList<>();
         comment.getComments().forEach(commentDB -> {
-            commentDtos.add(CommentDto.mapToCommentDto(commentDB));
+            commentDtos.add(CommentDto.mapToCommentDto(commentDB)   );
         });
-        commentDto.setCommentChild(commentDtos);
+        commentDto.setCommentsChild(commentDtos);
 
         return commentDto;
     }

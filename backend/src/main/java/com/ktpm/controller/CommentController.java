@@ -17,7 +17,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest) {
         Response responseData = new Response();
 
@@ -27,8 +27,8 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseData);
     }
 
-    @GetMapping("/comment/group/{id}")
-    public ResponseEntity<?> getCommentByGroupId(@PathVariable(name = "id") Long id) {
+    @GetMapping("/comments/groups/{id}")
+    public ResponseEntity<?> getCommentByGroupId(@PathVariable Long id) {
         Response responseData = new Response();
 
         responseData.setData(commentService.getCommentByGroupId(id));

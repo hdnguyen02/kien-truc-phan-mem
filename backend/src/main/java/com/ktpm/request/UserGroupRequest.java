@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UserGroupRequest {
-    private String email;
-    private Long groupId;
-}
+        private String email;
+        private Long groupId;
+    }

@@ -4,7 +4,6 @@ import Fail from "./Fail";
 import Success from "./Success";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { data } from "autoprefixer";
 // import React from "react";
 
 const CreateClass = () => {
@@ -20,7 +19,7 @@ const CreateClass = () => {
 	});
 
 	const navigate = useNavigate();
-
+	
 	const handleChangeInputGroup = (e)=> {
 		let {value, name} = e.target;
 		console.log(name + ": " + value);

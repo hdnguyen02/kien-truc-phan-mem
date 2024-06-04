@@ -4,8 +4,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import java.io.File;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,7 +17,7 @@ public class EmailServiceImpl implements IEmailService {
     @Value("${spring.mail.username}")
     private String sender;
     @Override
-    public boolean sendSimpleMail(EmailDetails details) {
+    public boolean sendSimpleMail(EmailDetail details) {
         // Try block to check for exceptions
         try {
 
@@ -48,7 +46,7 @@ public class EmailServiceImpl implements IEmailService {
     }
 
     @Override
-    public boolean sendMailWithAttachment(EmailDetails details) {
+    public boolean sendMailWithAttachment(EmailDetail details) {
         // Creating a mime message
         MimeMessage mimeMessage
                 = javaMailSender.createMimeMessage();

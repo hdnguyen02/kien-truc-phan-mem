@@ -40,7 +40,7 @@ function Navbar() {
           <Link className={location.pathname.includes('/cards') ? 'link-active' : ''} to={'/cards'} >Thẻ</Link>
         </li>}
         {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
-          <Link className={location.pathname.includes('/classes') ? 'link-active' : ''} to={'/classes'} >Lớp</Link>
+          <Link className={location.pathname.includes('/classes') ? 'link-active' : ''} to={'/classes/owner'} >Lớp</Link>
         </li>}
         <li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname === '/contact' ? 'link-active' : ''} to={'/contact'} >Liên hệ</Link>

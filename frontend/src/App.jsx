@@ -4,10 +4,9 @@ import SignIn from './page/SignIn'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ClassUser from './page/ClassUser'
 import Classes from './component/Classes'
-import DetailClass from './component/DetailClass'
-import MemberClass from './component/MemberClass'
+import DetailClass from './component/x.jsx'
+import MembersOwnerClass from './component/MembersOwnerClass.jsx'
 import StudentSession from './component/StudentSession'
-import AddMember from './component/AddMember'
 import ShareStudentSesion from './component/ShareStudentSession'
 import CreateClass from './component/CreateClass'
 import SignUp from './page/SignUp'
@@ -25,6 +24,11 @@ import Card from './page/Card'
 import Cards from './component/Cards'
 import { useEffect } from 'react'
 import { fetchData } from './global'
+import OwnerClasses from './component/OwnerClasses.jsx'
+import AttendanceClass from './component/AttendanceClass.jsx'
+import DetailOwnerClass from './component/DetailOwnerClass.jsx'
+import AddMember from './component/AddMember'
+import CommentClass from './component/CommentClass.jsx'
 
 
 
@@ -62,14 +66,30 @@ function App() {
 
             {/* classes */}
             <Route path='/classes' element={<ClassUser />}>
-              <Route path='' element={<Classes />} />
-              <Route path='create' element={<CreateClass />} />
+              <Route path='' element={<Classes />}>
+                <Route path='owner' element={<OwnerClasses />}>
+                 
+                </Route>
+                <Route path='attendance' element={<AttendanceClass />} />
+              </Route>
+
+              <Route path='detail-owner/:id' element={<DetailOwnerClass></DetailOwnerClass>}>
+
+                  {/* Thêm người dùng vào */}
+                  <Route path='add-member' element={<AddMember />} />
+                  <Route path='members' element={<MembersOwnerClass />} />
+                  <Route path='comments' element={<CommentClass />} />
+                
+              </Route>
+              
+  
+              {/* <Route path='create' element={<CreateClass />} />
               <Route path=':id' element={<DetailClass />} >
                 <Route path='members' element={<MemberClass />} />
                 <Route path='student-session' element={<StudentSession />} />
                 <Route path='add-member' element={<AddMember />} />
                 <Route path='share-student-session' element={<ShareStudentSesion />} />
-              </Route>
+              </Route> */}
             </Route>
 
             <Route path='/decks' element={<Deck />}>

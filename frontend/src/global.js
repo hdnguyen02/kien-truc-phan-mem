@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const baseUrl = "http://localhost:8080"
 export const authSignInUrl = "/api/v1/auth/sign-in"
 export const authSignUpUrl = "/api/v1/auth/sign-up"
@@ -95,3 +97,15 @@ export function handleError(code) {
             break;
     }
 }
+
+export const showToastMessage = ( message) => {
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+};
+
+export const showToastError = ( message) => {
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+};

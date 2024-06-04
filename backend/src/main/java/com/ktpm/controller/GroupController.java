@@ -23,53 +23,50 @@ import java.util.List;
 public class GroupController {
     @Autowired
     private GroupService groupService;
-    private Logger logger = Logger.getInstance();
 
-    @PostMapping("/group")
+    @PostMapping("/groups")
     public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest){
-        Response responseData = new Response();
+        Response response = new Response();
 
-        responseData.setData(groupService.createGroup(groupRequest));
-        responseData.setSuccess(true);
+        response.setData(groupService.createGroup(groupRequest));
+        response.setSuccess(true);
+        response.setMessage("Tạo class thành công");
 
-        logger.log(LogLevel.INFO, "CREATE GROUP " + groupRequest.getName() + " IS SUCCESSFULLY");
-
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
-    @PutMapping("/group")
+    @PutMapping("/groups")
     public ResponseEntity<?> updateGroup(@RequestBody GroupRequest groupRequest) {
         Response responseData = new Response();
         responseData.setData(groupService.updateGroup(groupRequest));
         responseData.setSuccess(true);
-        logger.log(LogLevel.INFO, "UPDATE GROUP " + groupRequest.getName() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
-
-    @GetMapping("/group")
-    public ResponseEntity<?> getGroups() {
-        Response responseData = new Response();
-        responseData.setSuccess(true);
-
-        logger.log(LogLevel.INFO, "GET GROUPS " +  " IS SUCCESSFULLY");
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
-    }
-
-
-    @GetMapping("/group/{id}")
-    public ResponseEntity<?> getGroupById(@PathVariable(name = "id") Long id) {
-        Response responseData = new Response();
-
-        GroupDto groupDto = groupService.getGroupById(id);
-        responseData.setData(groupDto);
-        responseData.setSuccess(true);
-        logger.log(LogLevel.INFO, "GET GROUP ID " + id.toString() + " IS SUCCESSFULLY");
-        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
-    }
-
-    @GetMapping("/group/usersActive/{id}")
-    public ResponseEntity<?> getUserOfGroupById(@PathVariable(name = "id") Long id) {
+    //
+//    @GetMapping("/group")
+//    public ResponseEntity<?> getGroups() {
+//        Response responseData = new Response();
+//        responseData.setSuccess(true);
+//
+//        logger.log(LogLevel.INFO, "GET GROUPS " +  " IS SUCCESSFULLY");
+//        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+//    }
+//
+//
+//    @GetMapping("/group/{id}")
+//    public ResponseEntity<?> getGroupById(@PathVariable(name = "id") Long id) {
+//        Response responseData = new Response();
+//
+//        GroupDto groupDto = groupService.getGroupById(id);
+//        responseData.setData(groupDto);
+//        responseData.setSuccess(true);
+//        logger.log(LogLevel.INFO, "GET GROUP ID " + id.toString() + " IS SUCCESSFULLY");
+//        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+//    }
+//
+        @GetMapping("/groups/{id}/members")
+    public ResponseEntity<?> getUserOfGroupById(@PathVariable Long id) {
         Response responseData = new Response();
 
         List<UserDto> userDtos= groupService.getUserOfGroup(id);
@@ -78,18 +75,17 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/group/user/{email}")
-    public ResponseEntity<?> getGroupByUser(@PathVariable(name = "email") String email) {
+    @GetMapping("/groups/owner")
+    public ResponseEntity<?> getGroupByUser() {
         Response responseData = new Response();
-
-        List<GroupDto> groupDtos = groupService.getGroupByUser(email);
+        List<GroupDto> groupDtos = groupService.getGroupByUser();
         responseData.setSuccess(true);
         responseData.setData(groupDtos);
-
+        responseData.setMessage("Truy vấn thành công");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/group/detail/{id}")
+    @GetMapping("/groups/detail/{id}")
     public ResponseEntity<?> getGroupByIdDetail(@PathVariable(name = "id") Long id) {
         Response responseData = new Response();
 
@@ -100,52 +96,53 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @DeleteMapping("/group/{id}")
-    public ResponseEntity<?> deleteGroupById(@PathVariable(name = "id") Long id) {
+    @DeleteMapping("/groups/{id}")
+    public ResponseEntity<?> deleteGroupById(@PathVariable Long id) {
         Response responseData = new Response();
         responseData.setData(groupService.deleteGroupById(id));
         responseData.setSuccess(true);
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-//    @DeleteMapping("/group/delUser")
-    @PostMapping("/group/delUser")
+    @PostMapping("/groups/delete-user")
     public ResponseEntity<?> deleteUserGroup(@RequestBody UserGroupRequest userGroupRequest) {
         Response responseData = new Response();
         responseData.setData(groupService.deleteUserGroupById(userGroupRequest));
         responseData.setSuccess(true);
-        logger.log(LogLevel.INFO, "DELETE USER " + userGroupRequest.getEmail() + " IS SUCCESSFULLY");
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @PostMapping("/group/addUser")
+    @PostMapping("/groups/invite-users")
     public ResponseEntity<?> addUserGroup(@RequestBody UserGroupRequest userGroupRequest){
         Response responseData = new Response();
 
         responseData.setData(groupService.addUserGroup(userGroupRequest));
         responseData.setSuccess(true);
+        responseData.setMessage("Gửi mail đến người dùng thành công");
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/group/{id}/addUser/active/{token}")
+    @GetMapping("/groups/{id}/add-users/active/{token}")
     public ResponseEntity<?> addUserGroup(@PathVariable(name = "id") Long id,
                                           @PathVariable(name = "token") String token){
         Response responseData = new Response();
 
         responseData.setData(groupService.activeUserGroup(id, token));
         responseData.setSuccess(true);
-        logger.log(LogLevel.INFO, "ACTIVE USER " + id.toString() + " IS SUCCESSFULLY");
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/group/attendance/{email}")
-    public ResponseEntity<?> getGroupAttendance(@PathVariable(name = "email") String email){
+
+    //a lấy ra dánh sách ngươi dùng tham gia.
+    @GetMapping("/groups/attendance")
+    public ResponseEntity<?> getGroupAttendance(){
         Response responseData = new Response();
 
-        responseData.setData(groupService.getGroupAttend(email));
+        responseData.setData(groupService.getGroupAttend());
         responseData.setSuccess(true);
+        responseData.setMessage("Truy vấn thành công");
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 }

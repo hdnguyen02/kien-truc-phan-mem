@@ -1,5 +1,6 @@
 package com.ktpm.service;
 
+import com.ktpm.Helper;
 import com.ktpm.dao.CommentDao;
 import com.ktpm.dto.CommentDto;
 import com.ktpm.entity.Comment;
@@ -18,12 +19,18 @@ public class CommentService {
     @Autowired
     private CommentDao commentRepository;
 
+    @Autowired
+    private Helper helper;
+
     public boolean createComment(CommentRequest commentRequest) {
+
+        String emailUser = helper.getEmailUser();
+
         Comment comment = new Comment();
 
         Date created = new Date();
         comment.setCreated(created);
-        comment.setUser(new User(commentRequest.getEmail()));
+        comment.setUser(new User(emailUser));
 
         comment.setContent(commentRequest.getContent());
         if (commentRequest.getParentId() != null) {
@@ -51,7 +58,6 @@ public class CommentService {
         comments.forEach(comment -> {
             commentDtos.add(CommentDto.mapToCommentDto(comment));
         });
-
         return commentDtos;
     }
 }

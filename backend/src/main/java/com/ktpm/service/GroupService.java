@@ -1,5 +1,6 @@
 package com.ktpm.service;
 
+import com.ktpm.Helper;
 import com.ktpm.dao.GroupDao;
 import com.ktpm.dao.UserDao;
 import com.ktpm.dao.UserGroupDao;
@@ -8,15 +9,13 @@ import com.ktpm.dto.UserDto;
 import com.ktpm.entity.Group;
 import com.ktpm.entity.User;
 import com.ktpm.entity.UserGroup;
-import com.ktpm.exception.GroupAlreadyExistsException;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
-import com.ktpm.sendmail.EmailDetails;
+import com.ktpm.sendmail.EmailDetail;
 import com.ktpm.sendmail.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -32,87 +31,69 @@ public class GroupService {
     private UserDao userRepository;
 
     @Autowired
-    private EmailServiceImpl emailService; // = new EmailServiceImpl();
+    private Helper helper;
 
-    public boolean createGroup(GroupRequest groupRequest) {
+
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
+
+    public GroupDto createGroup(GroupRequest groupRequest) {
         Group group = new Group();
-
         Date created = new Date();
+
+        String emailOwner = helper.getEmailUser();
+        User owner = helper.getUser();
+
+        group.setName(groupRequest.getName());
+        group.setDescription(groupRequest.getDescription());
+        group.setOwner(owner);
+        group.setCreated(created);
+        group.setCreatedBy(emailOwner);
+
+        return GroupDto.mapToGroupDto(groupRepository.save(group));
+    }
+
+    public boolean updateGroup(GroupRequest groupRequest) {
+        Group group = groupRepository.findById(groupRequest.getId()).orElseThrow();
 
         group.setName(groupRequest.getName());
         group.setDescription(groupRequest.getDescription());
         group.setOwner(new User(groupRequest.getEmail()));
-        group.setCreated(created);
-        group.setCreatedBy(groupRequest.getEmail());
-
-        Group groupSave = groupRepository.save(group);
-
-        return true;
-    }
-
-    public boolean updateGroup(GroupRequest groupRequest) {
-        Optional<Group> group = groupRepository.findById(groupRequest.getId());
-        if (group.isEmpty()) {
-            throw new GroupAlreadyExistsException("Group already exist with id "
-                    + groupRequest.getId());
-        }
-
-        Group groupDb = group.get();
-        groupDb.setName(groupRequest.getName());
-        groupDb.setDescription(groupRequest.getDescription());
-        groupDb.setOwner(new User(groupRequest.getEmail()));
 
         Date modified = new Date();
-        groupDb.setModified(modified);
-        groupDb.setModifiedBy(groupRequest.getEmail());
+        group.setModified(modified);
+        group.setModifiedBy(groupRequest.getEmail());
 
-        groupRepository.save(groupDb);
+        groupRepository.save(group);
 
         return true;
-    }
-
-    public List<GroupDto> getGroups() {
-        return null;
     }
 
     public GroupDto getGroupById(Long id) {
-        Optional<Group> group = groupRepository.findById(id);
-        if (group.isEmpty()) {
-            throw new GroupAlreadyExistsException("Group already exist with id "
-                    + id);
-        }
-        return GroupDto.mapToGroupDto(group.get());
+        Group group = groupRepository.findById(id).orElseThrow();
+        return GroupDto.mapToGroupDto(group);
     }
 
     public GroupDto getGroupDetailById(Long id) {
-        Optional<Group> group = groupRepository.findById(id);
-        if (group.isEmpty()) {
-            throw new GroupAlreadyExistsException("Group already exist with id "
-                    + id);
-        }
-        return GroupDto.mapToGroupDtoDetail(group.get());
+        Group group = groupRepository.findById(id).orElseThrow();
+        return GroupDto.mapToGroupDtoDetail(group);
     }
 
     public List<UserDto> getUserOfGroup(Long id){
         List<UserDto> userDtos = new ArrayList<>();
-        Optional<Group> group = groupRepository.findById(id);
-        if (group.isEmpty()) {
-            throw new GroupAlreadyExistsException("Group already exist with id "
-                    + id);
-        }
+        Group group = groupRepository.findById(id).orElseThrow();
 
-        List<UserGroup> userActiveGroup = group.get().getUserGroups().stream().filter(ele -> ele.isActive()).toList();
+        List<UserGroup> userActiveGroup = group.getUserGroups().stream().filter(UserGroup::isActive).toList();
         userActiveGroup.forEach(ele-> {
             userDtos.add(new UserDto(ele.getUser()));
         });
-
-
         return userDtos;
     }
 
 
-    public List<GroupDto> getGroupByUser(String email) {
-        List<Group> groups = groupRepository.findByOwner(new User(email));
+    public List<GroupDto> getGroupByUser() {
+        User owner = helper.getUser(); // thông tin của người dùng
+        List<Group> groups = groupRepository.findByOwner(owner);
         List<GroupDto> groupDtos = new ArrayList<>();
 
         groups.forEach(group -> {
@@ -123,12 +104,8 @@ public class GroupService {
     }
 
     public boolean deleteGroupById(Long id) {
-        Optional<Group> group = groupRepository.findById(id);
-        if (group.isEmpty()) {
-            throw new GroupAlreadyExistsException("Group already exist with id "
-                    + id);
-        }
-        groupRepository.delete(group.get());
+        Group group = groupRepository.findById(id).orElseThrow();
+        groupRepository.delete(group);
         return true;
     }
 
@@ -140,19 +117,14 @@ public class GroupService {
             throw new UsernameNotFoundException("Người dùng có mail không tồn tại!");
         }
 
-        // check is exist
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
-                    new Group(userGroupRequest.getGroupId())
-                );
+                new Group(userGroupRequest.getGroupId())
+        );
         String token = UUID.randomUUID().toString();
-        System.out.println("GroupID: " + userGroupRequest.getGroupId());
-        if (userGroups.size() > 0) {
-            System.out.println("OK1");
+        if (!userGroups.isEmpty()) {
             UserGroup userGroupDB = userGroups.get(0);
             if (!userGroupDB.isActive()) {
                 userGroupDB.setTokenActive(token);
-
-
                 Thread threadSaveData = new Thread(()-> {
                     userGroupRepository.save(userGroupDB);
                 });
@@ -160,11 +132,13 @@ public class GroupService {
                 Thread threadSendMail = new Thread(()->{
                     sendMailAddGroup(userGroupRequest.getGroupId(), userGroupRequest.getEmail(), token);
                 });
+
+                threadSendMail.start();
+                threadSaveData.start();
             }
 
         } else {
             UserGroup userGroup =  new UserGroup();
-            System.out.println("OK2");
             userGroup.setTokenActive(token);
 
             userGroup.setUser(new User(userGroupRequest.getEmail()));
@@ -188,14 +162,14 @@ public class GroupService {
     }
 
     private void sendMailAddGroup(Long groupId, String emailTo, String token) {
-        EmailDetails details = new EmailDetails();
+        EmailDetail details = new EmailDetail();
         details.setSubject("Thư mời tham gia lớp học");
         details.setRecipient(emailTo);
-        String link = "http://localhost:8080/api/v1/group/"+groupId+"/addUser/active/" + token;
+        String link = "http://localhost:8080/api/v1/groups/"+groupId+"/add-users/active/" + token;
         details.setMsgBody("<p>Xin chào bạn,</p>" +
                 "<p>Bạn vui lòng nhấn vào <a href=\'"+link+"\'>link này</a> để tham gia lớp học.</p>" +
                 "    <p>Trân trọng,</p>");
-        emailService.sendMailWithAttachment(details);
+        emailServiceImpl.sendMailWithAttachment(details);
     }
 
     public boolean activeUserGroup(Long groupId, String token) {
@@ -219,7 +193,7 @@ public class GroupService {
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
                 new Group(userGroupRequest.getGroupId())
         );
-        if (userGroups.size() == 0 ){
+        if (userGroups.isEmpty()){
             throw new UsernameNotFoundException("Người dùng có mail không có trong nhóm!");
         }
 
@@ -227,15 +201,17 @@ public class GroupService {
         return true;
     }
 
-    public List<GroupDto> getGroupAttend(String email) {
+    public List<GroupDto> getGroupAttend() {
+
+        User user = helper.getUser();
+
         List<GroupDto> groupDtos = new ArrayList<>();
 
-        List<UserGroup> userGroups = userGroupRepository.findByUserAndIsActive(new User(email), true);
+        List<UserGroup> userGroups = userGroupRepository.findByUserAndIsActive(user, true);
         userGroups.forEach(ele -> {
             groupDtos.add(GroupDto.mapToGroupDto(ele.getGroup()));
         });
 
         return groupDtos;
     }
-
 }

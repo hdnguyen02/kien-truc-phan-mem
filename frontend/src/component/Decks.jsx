@@ -1,15 +1,22 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { fetchData } from '../global'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DeleteDeck from './DeleteDeck'
 import Success from './Success'
 import Fail from './Fail'
 import ModelCreateDeck from './ModelCreateDeck'
 import ModelEditDeck from './ModelEditDeck'
+import Modal from "react-modal"
+
 
 
 function Decks() {
+
+    const appElement = document.getElementById("root");
+    Modal.setAppElement(appElement)
+    
+    const navigate = useNavigate()
 
     const [decks, setDecks] = useState()
     const refSuccess = useRef()
@@ -18,6 +25,36 @@ function Decks() {
     const refModelEditDeck = useRef()
     const [idDeckDelete, setIdDeckDelete] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
+    
+    // * state modal
+    const [isShowModalStudy, setIsShowModalStudy] = useState(false)
+
+
+    const showModalStudystyles = {
+        content: {
+          width: "400px",
+          height: "100px",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: 'while',
+          padding: "20px",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+     
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          outline: "none",
+          overflow: "auto",
+          display: "flex", 
+          justifyContent: 'center',
+          alignItems: 'center'
+
+          
+        },
+      };
+
+
+    
 
 
     async function handleDeleteDeck() {
@@ -61,6 +98,16 @@ function Decks() {
 
     function handleEditDeck(id) {
         refModelEditDeck.current.show(id)
+    }
+
+    function handleLearnCard(numberCards, idDeck) { 
+        if (numberCards == 0) {
+            setIsShowModalStudy(true)
+        }
+        else { 
+            const url = `/decks/${idDeck}/learn-cards`
+            navigate(url)
+        }
     }
 
 
@@ -133,9 +180,10 @@ function Decks() {
                                             {deck.createAt}
                                         </td>
                                         <td className='px-6 py-4 text-center'>
-                                            <Link to={`/decks/${deck.id}/learn-cards`}>
+                                            <button onClick={() => handleLearnCard(deck.numberCards, deck.id)}>
+                                                {/* to={`/decks/${deck.id}/learn-cards`} */}
                                                 <i className="fa-solid fa-graduation-cap text-xl"></i>
-                                            </Link>
+                                            </button>
 
                                         </td>
                                         <td className="px-6 py-4 text-center">
@@ -157,7 +205,6 @@ function Decks() {
                         </table>) : (<div>
                             <span className='text-sm'>Không có dữ liệu</span>
                         </div>)
-                        
                     }
                     <hr className='my-4' />
                 </div>
@@ -168,6 +215,25 @@ function Decks() {
         <DeleteDeck idDeckDelete={idDeckDelete} handleCancle={handleCancel} handleDeleteDeck={handleDeleteDeck} />
         <Success ref={refSuccess} />
         <Fail ref={refFail} />
+
+        <Modal
+        isOpen={isShowModalStudy}
+        onRequestClose={() => setIsShowModalStudy(false)}
+        contentLabel="Custom Modal"
+        style={showModalStudystyles}
+      >
+        <p className='text-center'>Bạn chưa có thẻ nào trong bộ thẻ, <Link to={'/cards'} className='text-blue-700 underline'>Tạo bộ thẻ</Link>
+        </p>
+      
+        {/* <div className="flex justify-end mt-3">
+          <button
+            onClick={() => {console.log('hihi')}}
+            className="flex items-center gap-x-2 h-9 px-5 text-sm text-center text-white rounded-md bg-green-600 sm:w-fit hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gray-300"
+          >
+            <span className="text-sm">Gửi</span>
+          </button>
+        </div> */}
+      </Modal>
     </div>
 }
 

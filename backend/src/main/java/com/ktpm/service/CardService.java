@@ -28,7 +28,14 @@ public class CardService {
                               MultipartFile image, MultipartFile audio) throws Exception {
 
         String emailUser = helper.getEmailUser();
-        Deck deck = deckDao.findFirstByIdAndUserEmail(idDeck, emailUser).orElseThrow();
+        Optional<Deck> oDeck = deckDao.findFirstByIdAndUserEmail(idDeck, emailUser);
+
+        if(oDeck.isEmpty()) {
+            throw new Exception("Not found");
+        }
+        Deck deck =  oDeck.get();
+
+
 
         String imageUrl = image != null ? firebaseStorageService.save("image", image) : null;
         String audioUrl = audio != null ? firebaseStorageService.save("audio", audio) : null;
@@ -44,7 +51,9 @@ public class CardService {
                 .isRemembered(false)
                 .deck(deck)
                 .build();
-        return new CardDto(cardDao.save(card));
+        Card cardSave = cardDao.save(card);
+
+        return null;
     }
 
 
@@ -128,3 +137,7 @@ public class CardService {
         }
     }
 }
+
+// lớp học: group
+// bộ thẻ: => thành viên trong lớp học chia sẻ với nhau.
+

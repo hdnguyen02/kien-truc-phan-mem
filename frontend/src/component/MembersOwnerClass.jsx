@@ -62,7 +62,7 @@ export default function MembersOwnerClass() {
                 <td className="px-6 py-4 text-center rounded-tr-lg rounded-br-lg"></td>
               </tr>
 
-              {members.map((member) => (
+              {members.map(member => (
                 <tr key={member.id} className="mt-4 bg-[#EDEFFF]">
                   <td
                     scope="row"

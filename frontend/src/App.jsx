@@ -29,6 +29,7 @@ import DetailOwnerClass from './component/DetailOwnerClass.jsx'
 import AddMember from './component/AddMember'
 import CommentClass from './component/CommentClass.jsx'
 import MembersAttendanceClass from './component/MembersAttendanceClass.jsx'
+import OwnerAssignments from './component/OwnerAssignments.jsx'
 
 
 
@@ -86,6 +87,7 @@ function App() {
                   <Route path='add-member' element={<AddMember />} />
                   <Route path='members' element={<MembersOwnerClass />} />
                   <Route path='comments' element={<CommentClass />} />
+                  <Route path='assignments' element={<OwnerAssignments />} />
                 
               </Route>
               

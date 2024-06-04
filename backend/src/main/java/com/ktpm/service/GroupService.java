@@ -37,7 +37,7 @@ public class GroupService {
     @Autowired
     private EmailServiceImpl emailServiceImpl;
 
-    public GroupDto createGroup(GroupRequest groupRequest) {
+    public Boolean createGroup(GroupRequest groupRequest) {
         Group group = new Group();
         Date created = new Date();
 
@@ -46,11 +46,13 @@ public class GroupService {
 
         group.setName(groupRequest.getName());
         group.setDescription(groupRequest.getDescription());
-        group.setOwner(owner);
+        group.setOwner(owner    );
         group.setCreated(created);
         group.setCreatedBy(emailOwner);
 
-        return GroupDto.mapToGroupDto(groupRepository.save(group));
+        groupRepository.save(group);
+
+        return true;
     }
 
     public boolean updateGroup(GroupRequest groupRequest) {

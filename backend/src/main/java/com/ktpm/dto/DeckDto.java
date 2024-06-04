@@ -18,6 +18,7 @@ public class DeckDto {
     private List<CardOfDeck> cards;
 
     public DeckDto(Deck deck) {
+        cards = new ArrayList<>();
         this.id = deck.getId();
         this.description = deck.getDescription();
         this.name = deck.getName();

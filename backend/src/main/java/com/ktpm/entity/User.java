@@ -19,7 +19,7 @@ import java.util.*;
 public class User implements UserDetails {
 
     @Id
-    @Column( length = 100)
+    @Column(name = "email", length = 100)
     private String email;
 
     @Column(nullable = false)
@@ -49,8 +49,11 @@ public class User implements UserDetails {
     @Column
     private String avatar;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Submit> submits;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Deck> decks;
 
 

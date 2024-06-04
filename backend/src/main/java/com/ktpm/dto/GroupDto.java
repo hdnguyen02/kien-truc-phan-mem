@@ -18,11 +18,8 @@ public class GroupDto {
     private Long id;
     private UserDto owner;
     private String name;
-
     private String description;
-
     private int quantity;
-
     List<UserDto> userGroups = new ArrayList<>();
 
     public static GroupDto mapToGroupDto(Group group){
@@ -32,9 +29,8 @@ public class GroupDto {
         groupDto.setOwner(new UserDto(group.getOwner()));
         groupDto.setDescription(group.getDescription());
 
-        int sizeClass = (int)group.getUserGroups().stream().filter(ele -> ele.isActive()).count();
-
-        groupDto.setQuantity(sizeClass);
+        int sizeUserGroups = (int)group.getUserGroups().stream().filter(UserGroup::isActive).count();
+        groupDto.setQuantity(sizeUserGroups);
 
         return  groupDto;
     }
@@ -46,7 +42,7 @@ public class GroupDto {
         groupDto.setOwner(new UserDto(group.getOwner()));
         groupDto.setDescription(group.getDescription());
 
-        List<UserGroup> userGroupsActive = group.getUserGroups().stream().filter(ele -> ele.isActive()).toList();
+        List<UserGroup> userGroupsActive = group.getUserGroups().stream().filter(UserGroup::isActive).toList();
         List<UserDto> userDtos  = new ArrayList<>();
         userGroupsActive.forEach(ele->{
             userDtos.add(new UserDto(ele.getUser()));
@@ -54,9 +50,9 @@ public class GroupDto {
 
         groupDto.setUserGroups(userDtos);
 
-        int sizeClass = userGroupsActive.size();
+        int sizeUserGroups = userGroupsActive.size();
 
-        groupDto.setQuantity(sizeClass);
+        groupDto.setQuantity(sizeUserGroups);
 
         return  groupDto;
     }

@@ -33,6 +33,11 @@ public class Group extends BaseEntity{
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserGroup> userGroups;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    private List<Assignment> assignments;
+
+
+    
     public Group(Long id) {
         this.id = id;
     }

@@ -36,7 +36,7 @@ public class Card {
     @Column(name = "is_remembered")
     private Boolean isRemembered;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_deck", nullable = false)
     private Deck deck;
 }

@@ -41,21 +41,23 @@ export default function DetailOwnerClass() {
                 <span>Chia sẻ học phần</span>
             </Link> */}
 
-            { location.pathname.includes("owner") ?
-              (<Link
+            {location.pathname.includes("owner") ? (
+              <Link
                 to={`/classes/detail-owner/${params.id}/members`}
                 className="font-medium flex gap-x-2"
               >
                 <img src="/group.png" className="w-6" alt="" />
                 <span>Thành viên</span>
-              </Link>) : (<Link
+              </Link>
+            ) : (
+              <Link
                 to={`/classes/detail-attendance/${params.id}/members`}
                 className="font-medium flex gap-x-2"
               >
                 <img src="/group.png" className="w-6" alt="" />
                 <span>Thành viên</span>
-              </Link>)
-            }
+              </Link>
+            )}
 
             {location.pathname.includes("owner") && (
               <Link
@@ -82,6 +84,24 @@ export default function DetailOwnerClass() {
               >
                 <img src="/plus.png" className="w-6" alt="" />
                 <span>Thảo luận</span>
+              </Link>
+            )}
+
+            {location.pathname.includes("owner") ? (
+              <Link
+                to={`/classes/detail-owner/${params.id}/assignments`}
+                className="font-medium flex gap-x-2"
+              >
+                <img src="/plus.png" className="w-6" alt="" />
+                <span>Bài tập</span>
+              </Link>
+            ) : (
+              <Link
+                to={`/classes/detail-attendance/${params.id}/comments`}
+                className="font-medium flex gap-x-2"
+              >
+                <img src="/plus.png" className="w-6" alt="" />
+                <span>Bài tập</span>
               </Link>
             )}
           </div>

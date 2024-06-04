@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,10 @@ public class Deck {
 
     @Column(name = "create_at", length = 10)
     private String createAt;
+
+
+
+
+
+
 }

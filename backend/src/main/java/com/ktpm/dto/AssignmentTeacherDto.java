@@ -1,10 +1,11 @@
 package com.ktpm.dto;
 
 import com.ktpm.entity.Assignment;
-import com.ktpm.entity.Group;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -12,22 +13,28 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class AssignmentDto {
+public class AssignmentTeacherDto {
     private Long id;
     private String name;
     private Date deadline;
     private String description;
     private String url;
-    private int quantitySubmit;
+    private List<SubmitDto> submits;
 
-
-    public AssignmentDto(Assignment assignment) {
+    public AssignmentTeacherDto(Assignment assignment) {
+        submits = new ArrayList<>();
         this.id = assignment.getId();
         this.name = assignment.getName();
         this.deadline = assignment.getDeadline();
         this.description = assignment.getDescription();
         this.url = assignment.getUrl(); // này chỉ cần hiển thị số lượng submit thôi
-        this.quantitySubmit = assignment.getSubmits().size();
+
+        // còn có submit dto.
+        assignment.getSubmits().forEach(submit -> {
+            submits.add(new SubmitDto(submit));
+        });
+
+
     }
 
     // url nguời dùng submit

@@ -1,14 +1,13 @@
-import React, { useState, useRef } from 'react'
-import { baseUrl, authSignInUrl } from '../global'
-import Fail from '../component/Fail'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { fetchDataWithoutAccessToken } from '../global'
+import { Link, json } from 'react-router-dom'
 
 function SignUp() {
-  const failRef = useRef()
-  // khởi tạo 1 biến. 
   let isShowPassword = false
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
+
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [isRemember, setIsRemember] = useState()
 
 
   function handleChangeView() {   
@@ -28,36 +27,23 @@ function SignUp() {
   }
 
   async function postSignUp(email, password, isRemember) {
-    const url = baseUrl + '/api/v1/auth/sign-up'
-    try {
-      const jsonRp = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password,isRemember })
-      })
-      const response = await jsonRp.json()
-      if (!jsonRp.ok) {
-        throw new Error(response.message)
-      } 
-      const data = response.data
-      console.log(data)
-      localStorage.setItem('accessToken', data.accessToken)
+    const subUrl = '/auth/sign-up'
+    const body = { email, password, isRemember }
+    try { 
+      const response = await fetchDataWithoutAccessToken(subUrl, 'POST', body)
+      const auth = response.data
+      localStorage.setItem('accessToken', auth.accessToken)
       localStorage.setItem('isAuthenticated', true)
-      localStorage.setItem('email', data.user.email)
+      localStorage.setItem('email', auth.user.email)
+      localStorage.setItem('roles', JSON.stringify(auth.user.roles))
       window.location.reload('/')
     }
-    catch (error) {
-      failRef.current.show(error.message, 2000)
+    catch(error) { 
+      console.log(error.message)
     }
   }
   function handleSignUp(event) {
     event.preventDefault()
-    const email = emailRef.current.value
-    const password = passwordRef.current.value
-    const isRemember = document.getElementById('is-remember').checked
-
     postSignUp(email, password, isRemember)
   }
 
@@ -81,11 +67,9 @@ function SignUp() {
           Email
         </label>
         <input
-          ref={emailRef}
+          onChange={e => setEmail(e.target.value)}
           type="email"
-          id="email"
-          name="email"
-          className="mt-2 w-full border-2 rounded-md py-2 px-3"
+          className="mt-2 w-full rounded-md py-2 px-3"
           required
         />
       </div>
@@ -96,10 +80,9 @@ function SignUp() {
         </label>
         <div className='relative'>
           <input
-            ref={passwordRef}
+            onChange={e => setPassword(e.target.value)}
+            id='password'
             type="password"
-            id="password"
-            name="password"
             className="w-full borde rounded-md py-2 px-3"
             required
           />
@@ -110,9 +93,8 @@ function SignUp() {
       {/* Remember Me Checkbox */}
       <div className="mb-4 flex items-center">
         <input
-          id="is-remember"
+          onChange={e => setIsRemember(e.target.value)}
           type="checkbox"
-          name="remember"
           className="text-blue-500"
           
         />
@@ -141,7 +123,6 @@ function SignUp() {
       </Link>
     </div>
   </div>
-  <Fail ref={failRef}/>
 </div>)
 
 }

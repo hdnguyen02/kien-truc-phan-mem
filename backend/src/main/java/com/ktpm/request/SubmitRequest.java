@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmitRequest {
-    private String idGroup;
-    private String idAssignment;
+    private Long idGroup;
+    private Long idAssignment;
 }

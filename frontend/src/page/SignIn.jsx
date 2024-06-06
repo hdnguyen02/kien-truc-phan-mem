@@ -1,14 +1,17 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { baseUrl, fetchDataWithoutAccessToken } from '../global'
 import Fail from '../component/Fail'
 import { Link, useNavigate   } from 'react-router-dom'
 
 function SignIn() {
-  const failRef = useRef()
+
   const navigate = useNavigate()
   let isShowPassword = false
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [isRemember, setIsRemember] = useState()
+
+  
 
 
   function handleChangeView() {   
@@ -36,21 +39,22 @@ function SignIn() {
 
     try { 
       const response = await fetchDataWithoutAccessToken(subUrl, 'POST', body)
-      const data = response.data
-      localStorage.setItem('accessToken', data.accessToken)
+      const auth = response.data
+  
+      localStorage.setItem('accessToken', auth.accessToken)
       localStorage.setItem('isAuthenticated', true)
-      localStorage.setItem('email', data.user.email)
+      localStorage.setItem('email', auth.user.email)
+      localStorage.setItem('roles', JSON.stringify(auth.user.roles))
+
+
       navigate('/')
     }
     catch (error) {
-      failRef.current.show(error.message, 2000)
+     
     }  
   }
   function handleSignIn(event) {
     event.preventDefault()
-    const email = emailRef.current.value
-    const password = passwordRef.current.value
-    const isRemember = document.getElementById('is-remember').checked
 
     postSignIn(email, password, isRemember)
   }
@@ -74,11 +78,8 @@ function SignIn() {
         <label htmlFor="email" className="block text-gray-600">
           Email
         </label>
-        <input
-          ref={emailRef}
+        <input onChange={e => setEmail(e.target.value)}
           type="email"
-          id="email"
-          name="email"
           className="mt-2 w-full rounded-md py-2 px-3"
           required
         />
@@ -89,11 +90,10 @@ function SignIn() {
           Password
         </label>
         <div className='relative'>
-          <input
-            ref={passwordRef}
+          <input onChange={e => setPassword(e.target.value)}
+    
             type="password"
             id="password"
-            name="password"
             className="w-full rounded-md py-2 px-3"
             required
           />
@@ -104,7 +104,7 @@ function SignIn() {
       {/* Remember Me Checkbox */}
       <div className="mb-4 flex items-center">
         <input
-          id="is-remember"
+          onChange={e => setIsRemember(e.target.value)}
           type="checkbox"
           name="remember"
           className="text-blue-500"
@@ -135,7 +135,6 @@ function SignIn() {
       </Link>
     </div>
   </div>
-  <Fail ref={failRef}/>
 </div>)
 
 }

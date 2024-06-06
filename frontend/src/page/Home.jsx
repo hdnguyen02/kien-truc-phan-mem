@@ -3,7 +3,7 @@
 
 function Home() {
   return (
-    <div className="mt-[80px] w-full">
+    <div className="mt-[60px] w-full">
        <img className="w-full h-full" src="/study.jpg" alt=""/>
     </div>
   )

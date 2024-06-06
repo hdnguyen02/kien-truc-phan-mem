@@ -6,6 +6,9 @@ import lombok.*;
 import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -19,12 +22,14 @@ public class UserDto {
     private String dateOfBirth;
     private String createAt;
     private Boolean isEnabled;
-    private Set<Role> roles;
+    private List<String> roles;
     private String avatar;
     private String gender;
     private String phone;
     private Integer age;
     public UserDto(User user) {
+
+        roles = new ArrayList<>();
         avatar = user.getAvatar();
         email = user.getEmail();
         name = user.getName();
@@ -34,7 +39,10 @@ public class UserDto {
         gender = user.getGender();
         phone = user.getPhone();
         age= user.getAge();
-        roles = user.getRoles();
+
+        user.getRoles().forEach(role -> {
+            roles.add(role.getName());
+        });
     }
 }
     

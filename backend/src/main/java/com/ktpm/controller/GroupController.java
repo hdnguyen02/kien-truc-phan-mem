@@ -2,8 +2,6 @@ package com.ktpm.controller;
 
 import com.ktpm.dto.GroupDto;
 import com.ktpm.dto.UserDto;
-import com.ktpm.mylogger.LogLevel;
-import com.ktpm.mylogger.Logger;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
 import com.ktpm.response.Response;
@@ -87,13 +85,13 @@ public class GroupController {
 
     @GetMapping("/groups/detail/{id}")
     public ResponseEntity<?> getGroupByIdDetail(@PathVariable(name = "id") Long id) {
-        Response responseData = new Response();
+        Response response = new Response();
 
         GroupDto groupDto = groupService.getGroupDetailById(id);
-        responseData.setData(groupDto);
-        responseData.setSuccess(true);
+        response.setData(groupDto);
+        response.setSuccess(true);
 
-        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+        return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/groups/{id}")
@@ -123,15 +121,7 @@ public class GroupController {
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
-    @GetMapping("/groups/{id}/add-users/active/{token}")
-    public ResponseEntity<?> addUserGroup(@PathVariable(name = "id") Long id,
-                                          @PathVariable(name = "token") String token){
-        Response responseData = new Response();
 
-        responseData.setData(groupService.activeUserGroup(id, token));
-        responseData.setSuccess(true);
-        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
-    }
 
 
     //a lấy ra dánh sách ngươi dùng tham gia.

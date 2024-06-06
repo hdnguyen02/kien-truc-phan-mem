@@ -32,14 +32,7 @@ export default function DetailOwnerClass() {
 
         <div className="mt-4">
           <div className="flex gap-x-24">
-            {/* <Link to={"/classes/1/student-session"} className='font-medium flex gap-x-2 underline text-blue-600'>
-                <img src="/folder.png" className='w-6' alt="" />
-                <span>Học phần</span>  
-            </Link>
-            <Link to={'/classes/1/share-student-session'} className='font-medium flex gap-x-2'>
-                <img src="/book.png" className='w-6' alt="" />
-                <span>Chia sẻ học phần</span>
-            </Link> */}
+
 
             {location.pathname.includes("owner") ? (
               <Link
@@ -72,9 +65,9 @@ export default function DetailOwnerClass() {
             {location.pathname.includes("owner") ? (
               <Link
                 to={`/classes/detail-owner/${params.id}/comments`}
-                className="font-medium flex gap-x-2"
+                className="font-medium flex gap-x-2 "
               >
-                <img src="/plus.png" className="w-6" alt="" />
+                <img src="/chat.png" className="w-6" alt="" />
                 <span>Thảo luận</span>
               </Link>
             ) : (
@@ -82,7 +75,7 @@ export default function DetailOwnerClass() {
                 to={`/classes/detail-attendance/${params.id}/comments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/plus.png" className="w-6" alt="" />
+                <img src="/chat.png" alt="" />
                 <span>Thảo luận</span>
               </Link>
             )}
@@ -92,15 +85,15 @@ export default function DetailOwnerClass() {
                 to={`/classes/detail-owner/${params.id}/assignments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/plus.png" className="w-6" alt="" />
+                <img src="/paper.png" className="w-6" alt="" />
                 <span>Bài tập</span>
               </Link>
             ) : (
               <Link
-                to={`/classes/detail-attendance/${params.id}/comments`}
+                to={`/classes/detail-attendance/${params.id}/assignments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/plus.png" className="w-6" alt="" />
+                <img src="/paper.png" className="w-6" alt="" />
                 <span>Bài tập</span>
               </Link>
             )}
@@ -121,11 +114,11 @@ export default function DetailOwnerClass() {
               <span className="font-medium">Chi tiết lớp học</span>
               <div className="flex gap-x-3 items-center">
                 <img src="/book.png" className="w-8 h-8" alt="" />
-                <span>1 học phần</span>
+                <span>3 bài tập</span>
               </div>
               <div className="flex gap-x-3 items-center">
                 <img src="/group.png" className="w-8 h-8" alt="" />
-                <span>25 thành viên</span>
+                <span>2 thành viên</span>
               </div>
             </div>
           </div>

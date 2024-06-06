@@ -39,9 +39,7 @@ export default function AttendanceClass() {
                                     Số thành viên
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Chi tiết
-                                </th>
-                        
+                                </th>                       
                             </tr>
                         </thead>
             <tbody>
@@ -56,20 +54,6 @@ export default function AttendanceClass() {
                         <td className="px-6 py-4">
                             <Link to={'/classes/detail-attendance/' + attendanceClass.id + '/members'} className="underline text-blue-500">Chi tiết</Link>
                         </td>   
-                        
-                        {/* <td className="px-6 py-4 text-center">
-                            <i className="fa-solid fa-share text-xl"></i>
-                        </td>
-
-                        <td className="px-6 py-4 text-center">
-                            <button onClick={() => handleEditDeck(deck.id)} ><i className="fa-regular fa-pen-to-square text-xl"></i>
-                            </button>
-                        </td>
-                        <td onClick={(event) => showPopupDeleteDeck(event, deck.id)} className="px-6 py-4 text-center">
-                            <i className="fa-regular fa-trash-can text-xl"></i>
-                        </td> */}
-
-
                     </tr>
                 ))}
 

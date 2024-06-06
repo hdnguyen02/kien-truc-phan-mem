@@ -19,7 +19,7 @@ import java.util.*;
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "email", length = 100)
+    @Column(length = 100)
     private String email;
 
     @Column(nullable = false)

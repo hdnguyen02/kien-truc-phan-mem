@@ -58,10 +58,9 @@ public class ConfigSecurity {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/auth/**").permitAll()
-                        .requestMatchers("api/v1/groups/*/add-users/active/*").permitAll()
-                        .requestMatchers("/api/v1/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("api/v1/auth/**", "groups/*/add-users/active/*").permitAll()
+                        .anyRequest().authenticated()
+                        .requestMatchers("api/v1/teacher/**").hasRole("TEACHER")
                 )
                 .sessionManagement(ssm -> ssm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

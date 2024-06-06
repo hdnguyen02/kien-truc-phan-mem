@@ -1,17 +1,14 @@
 package com.ktpm.service;
 
 
-import com.google.api.gax.rpc.NotFoundException;
 import com.ktpm.Helper;
 import com.ktpm.dao.AssignmentDao;
 import com.ktpm.dao.GroupDao;
-import com.ktpm.dto.AssignmentDto;
+import com.ktpm.dto.AssignmentStudentDto;
+import com.ktpm.dto.AssignmentTeacherDto;
 import com.ktpm.entity.Assignment;
 import com.ktpm.entity.Group;
-import com.ktpm.entity.User;
-import com.ktpm.request.AssignmentRequest;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,17 +56,38 @@ public class AssignmentService {
     }
 
 
-    public List<AssignmentDto> getAssignments(long idGroup) throws Exception {
+    public List<AssignmentStudentDto> getStudentAssignments(long idGroup) throws Exception {
         Group group =groupDao.findById(idGroup).orElse(null);
         if (group == null) throw new Exception("Không tồn tại group");
         List<Assignment> assignments = group.getAssignments();
-        List<AssignmentDto> assignmentDtos = new ArrayList<>();
+        List<AssignmentStudentDto> assignmentDtos = new ArrayList<>();
         assignments.forEach(assignment -> {
-            assignmentDtos.add(new AssignmentDto(assignment));
+            assignmentDtos.add(new AssignmentStudentDto(assignment));
         });
-        System.out.println(assignmentDtos.size());
+
         return assignmentDtos;
     }
+
+
+    public AssignmentTeacherDto getTeacherAssignment(Long id) throws Exception {
+
+        Assignment assignment = assignmentDao.findById(id).orElse(null);
+        if (assignment == null) throw new Exception("Không tìm thấy tài nguyên");
+
+        return new AssignmentTeacherDto(assignment);
+    }
+
+    public AssignmentStudentDto getStudentAssignment(Long id) throws Exception {
+        Assignment assignment = assignmentDao.findById(id).orElse(null);
+        if (assignment == null) throw new Exception("Không tìm thấy tài nguyên");
+        return new AssignmentStudentDto(assignment);
+    }
+
+
+
+
+
+
 
 }
 

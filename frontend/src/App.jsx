@@ -4,10 +4,7 @@ import SignIn from './page/SignIn'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ClassUser from './page/ClassUser'
 import Classes from './component/Classes'
-import MembersOwnerClass from './component/MembersOwnerClass.jsx'
-import StudentSession from './component/StudentSession'
-import ShareStudentSesion from './component/ShareStudentSession'
-import CreateClass from './component/CreateClass'
+import MembersClass from './component/MembersClass.jsx'
 import SignUp from './page/SignUp'
 import Settings from './page/Settings'
 import InfoUser from './component/InfoUser'
@@ -25,11 +22,13 @@ import { useEffect } from 'react'
 import { fetchData } from './global'
 import OwnerClasses from './component/OwnerClasses.jsx'
 import AttendanceClasses from './component/AttendanceClasses.jsx'
-import DetailOwnerClass from './component/DetailOwnerClass.jsx'
+import DetailClass from './component/DetailClass.jsx'
 import AddMember from './component/AddMember'
 import CommentClass from './component/CommentClass.jsx'
-import MembersAttendanceClass from './component/MembersAttendanceClass.jsx'
-import OwnerAssignments from './component/OwnerAssignments.jsx'
+import Assignments from './component/Assignments.jsx'
+import AssignmentTeacher from './page/AssignmentTeacher.jsx'
+import DetailAssignment from './component/DetailAssignment.jsx'
+import Submits from './component/Submits.jsx'
 
 
 
@@ -65,40 +64,34 @@ function App() {
           {/* private router */}
           <Route element={<PrivateRoutes />}>
 
+            <Route path='/teacher/classes/:idClass/assignments/:idAssignment' element={<AssignmentTeacher/>}>
+                <Route path='' element={<DetailAssignment/>}> </Route>
+                <Route path='submits' element={<Submits/>}> </Route>
+            </Route>
+
             {/* classes */}
             <Route path='/classes' element={<ClassUser />}>
               <Route path='' element={<Classes />}>
-                <Route path='owner' element={<OwnerClasses />}>
-                 
-                </Route>
-                <Route path='attendance' element={<AttendanceClasses />}>
-                  
-                </Route>
+                <Route path='owner' element={<OwnerClasses />}></Route>
+                <Route path='attendance' element={<AttendanceClasses />}></Route>
               </Route>
 
 
-              <Route path='detail-attendance/:id' element={<DetailOwnerClass></DetailOwnerClass>}>
-                  <Route path='members' element={<MembersOwnerClass />} />
+              <Route path='detail-attendance/:id' element={<DetailClass></DetailClass>}>
+                  <Route path='members' element={<MembersClass />} />
                   <Route path='comments' element={<CommentClass />} />
+                  <Route path='assignments' element={<Assignments />} />
               </Route>
-              <Route path='detail-owner/:id' element={<DetailOwnerClass></DetailOwnerClass>}>
+              <Route path='detail-owner/:id' element={<DetailClass></DetailClass>}>
 
                   {/* Thêm người dùng vào */}
                   <Route path='add-member' element={<AddMember />} />
-                  <Route path='members' element={<MembersOwnerClass />} />
+                  <Route path='members' element={<MembersClass />} />
                   <Route path='comments' element={<CommentClass />} />
-                  <Route path='assignments' element={<OwnerAssignments />} />
+                  <Route path='assignments' element={<Assignments />} />
                 
               </Route>
-              
-  
-              {/* <Route path='create' element={<CreateClass />} />
-              <Route path=':id' element={<DetailClass />} >
-                <Route path='members' element={<MemberClass />} />
-                <Route path='student-session' element={<StudentSession />} />
-                <Route path='add-member' element={<AddMember />} />
-                <Route path='share-student-session' element={<ShareStudentSesion />} />
-              </Route> */}
+
             </Route>
 
             <Route path='/decks' element={<Deck />}>

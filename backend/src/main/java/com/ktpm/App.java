@@ -22,16 +22,21 @@ public class App {
 		Logger.getInstance().log(LogLevel.INFO, "START APPLICATION");
 		SpringApplication.run(App.class, args);
 	}
-	@Bean
-	CommandLineRunner commandLineRunner (RoleDao roleDao) {
-		return arg -> {
-			List<Role> roles = roleDao.findAll();
-			if (!roles.isEmpty()) return;
-			Role roleUser = new Role("USER");
-			Role roleAdmin = new Role("ADMIN");
-			roles.add(roleUser);
-			roles.add(roleAdmin);
-			roleDao.saveAll(roles);
+		@Bean
+		CommandLineRunner commandLineRunner (RoleDao roleDao) {
+			return arg -> {
+				List<Role> roles = roleDao.findAll();
+				if (!roles.isEmpty()) return;
+				Role roleStudent = new Role("STUDENT");
+				Role roleTeacher = new Role("TEACHER");
+				Role roleAdmin = new Role("ADMIN");
+				roles.add(roleStudent);
+				roles.add(roleTeacher);
+				roles.add(roleAdmin);
+				roleDao.saveAll(roles);
 		};
 	}
 }
+
+
+

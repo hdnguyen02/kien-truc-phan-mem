@@ -19,29 +19,28 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequiredArgsConstructor
-@RequestMapping("${system.version}")
+@RequestMapping("api/v1/student")
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
-    @PostMapping("/assignments")
-    public ResponseEntity<?> filterCards(@RequestParam String name,
-                                                @RequestParam String description,
-                                                @RequestParam Long idGroup,
-                                                @RequestParam String deadline,
-                                                @RequestParam MultipartFile file
-                                                ) throws Exception {
 
-        Date dDeadline = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(deadline);
-        boolean result = assignmentService.createAssignment(name, description, idGroup, dDeadline, file);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @GetMapping("/assignments")
     public ResponseEntity<?> getAssignments(@RequestParam(name = "id-group") Long idGroup
     ) throws Exception {
 
         Response response = new Response();
-        response.setData(assignmentService.getAssignments(idGroup));
+        response.setData(assignmentService.getStudentAssignments(idGroup));
+        response.setSuccess(true);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/assignments/{id}")
+    public ResponseEntity<?> getAssignment(@PathVariable Long id) throws Exception {
+
+        Response response = new Response();
+        response.setData(assignmentService.getStudentAssignment(id));
         response.setSuccess(true);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

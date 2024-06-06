@@ -224,15 +224,6 @@ function Decks() {
       >
         <p className='text-center'>Bạn chưa có thẻ nào trong bộ thẻ, <Link to={'/cards'} className='text-blue-700 underline'>Tạo bộ thẻ</Link>
         </p>
-      
-        {/* <div className="flex justify-end mt-3">
-          <button
-            onClick={() => {console.log('hihi')}}
-            className="flex items-center gap-x-2 h-9 px-5 text-sm text-center text-white rounded-md bg-green-600 sm:w-fit hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gray-300"
-          >
-            <span className="text-sm">Gửi</span>
-          </button>
-        </div> */}
       </Modal>
     </div>
 }

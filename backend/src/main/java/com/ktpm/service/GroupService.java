@@ -167,7 +167,7 @@ public class GroupService {
         EmailDetail details = new EmailDetail();
         details.setSubject("Thư mời tham gia lớp học");
         details.setRecipient(emailTo);
-        String link = "http://localhost:8080/api/v1/groups/"+groupId+"/add-users/active/" + token;
+        String link = "http://localhost:8080/groups/"+groupId+"/add-users/active/" + token;
         details.setMsgBody("<p>Xin chào bạn,</p>" +
                 "<p>Bạn vui lòng nhấn vào <a href=\'"+link+"\'>link này</a> để tham gia lớp học.</p>" +
                 "    <p>Trân trọng,</p>");

@@ -47,7 +47,7 @@ public class AuthService {
         Boolean isRemember = signUpRequest.getIsRemember() != null;
 
 
-        Role role = new Role("USER");
+        Role role = new Role("STUDENT");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
@@ -59,12 +59,12 @@ public class AuthService {
                 .password(passwordEncoder.encode(password))
                 .name(null)
                 .dateOfBirth(null)
-                    .gender(null)
-                    .age(null)
-                    .phone(null)
-                    .createAt(helper.formatDate(new Date()))
-                    .isEnabled(true)
-                    .roles(roles)
+                .gender(null)
+                .age(null)
+                .phone(null)
+                .createAt(helper.formatDate(new Date()))
+                .isEnabled(true)
+                .roles(roles)
                 .build();
 
         try {

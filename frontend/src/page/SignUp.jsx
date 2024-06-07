@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { fetchDataWithoutAccessToken } from '../global'
-import { Link, json } from 'react-router-dom'
+import { fetchDataWithoutAccessToken, showToastError } from '../global'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
 function SignUp() {
   let isShowPassword = false
+  
+
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
@@ -36,10 +40,11 @@ function SignUp() {
       localStorage.setItem('isAuthenticated', true)
       localStorage.setItem('email', auth.user.email)
       localStorage.setItem('roles', JSON.stringify(auth.user.roles))
-      window.location.reload('/')
+      navigate('/')
     }
     catch(error) { 
-      console.log(error.message)
+      showToastError(error.message)
+
     }
   }
   function handleSignUp(event) {
@@ -123,6 +128,7 @@ function SignUp() {
       </Link>
     </div>
   </div>
+  <ToastContainer/>
 </div>)
 
 }

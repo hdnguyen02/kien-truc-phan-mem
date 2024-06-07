@@ -122,9 +122,6 @@ public class GroupController {
     }
 
 
-
-
-    //a lấy ra dánh sách ngươi dùng tham gia.
     @GetMapping("/groups/attendance")
     public ResponseEntity<?> getGroupAttendance(){
         Response responseData = new Response();

@@ -1,6 +1,7 @@
 package com.ktpm.entity;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -69,6 +70,7 @@ public class User implements UserDetails {
     private List<UserGroup> userGroups;
 
     @Override
+    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
         this.roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));

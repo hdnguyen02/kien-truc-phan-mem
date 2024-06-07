@@ -7,9 +7,12 @@ import com.ktpm.dto.UserDto;
 import com.ktpm.entity.Role;
 import com.ktpm.entity.User;
 import java.nio.file.Paths;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,7 +95,8 @@ public class UserService {
     }
 
 
-
-
-
+    public User loadUserByEmail(String email) {
+        return userDao.findById(email)
+                .orElseThrow(() -> new UsernameNotFoundException("not found user!"));
+    }
 }

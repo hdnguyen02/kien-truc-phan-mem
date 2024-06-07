@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
-import { baseUrl, fetchDataWithoutAccessToken } from '../global'
-import Fail from '../component/Fail'
-import { Link, useNavigate   } from 'react-router-dom'
+import React, { useState } from 'react'
+import { fetchDataWithoutAccessToken, showToastError } from '../global'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer } from "react-toastify"
 
-function SignIn() {
+
+export default function SignIn() {
 
   const navigate = useNavigate()
   let isShowPassword = false
@@ -50,7 +51,9 @@ function SignIn() {
       navigate('/')
     }
     catch (error) {
-     
+      showToastError(error.message)
+      
+      
     }  
   }
   function handleSignIn(event) {
@@ -135,7 +138,8 @@ function SignIn() {
       </Link>
     </div>
   </div>
+  <ToastContainer/>
 </div>)
 
 }
-export default SignIn
+

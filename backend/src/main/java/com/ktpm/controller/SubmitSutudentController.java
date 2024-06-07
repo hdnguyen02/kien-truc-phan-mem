@@ -18,9 +18,6 @@ public class SubmitSutudentController {
     private final SubmitService submitService;
 
 
-
-
-
     @PostMapping("/submits")
     public ResponseEntity<?> createGroup(@RequestParam Long idGroup,
                                          @RequestParam Long idAssignment,

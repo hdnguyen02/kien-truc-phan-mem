@@ -21,6 +21,12 @@ export default function OwnerClasses() {
         }
     }
 
+    async function handleDeleteClass(id) { 
+        const subUrl = `/groups/${id}`
+        await fetchData(subUrl, 'DELETE')
+        getOwnerClass()
+    }
+
     useEffect(() => {
         if (roles.includes('TEACHER')) {
             getOwnerClass()
@@ -62,8 +68,8 @@ export default function OwnerClasses() {
                     </tr>
                 </thead>
                 <tbody>
-                    {ownerClasses.map(ownerClass => (
-                        <tr key={ownerClass.id} className="mt-4 bg-[#EDEFFF]">
+                    {ownerClasses.map((ownerClass, index) => (
+                        <tr key={index} className="mt-4 bg-[#EDEFFF]">
                             <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg">
                                 {ownerClass.name}
                             </td>
@@ -74,7 +80,7 @@ export default function OwnerClasses() {
                                 <Link to={'/classes/detail-owner/' + ownerClass.id + '/members'} className="underline text-blue-500">Chi tiết</Link>
                             </td>
                             <td className='px-6 py-4 text-center rounded-tr-lg rounded-br-lg'>
-                                <Link className="underline text-red-500"><i className="fa-regular fa-trash-can text-xl"></i></Link>
+                                <button onClick={() => handleDeleteClass(ownerClass.id)} className="underline text-red-500"><i className="fa-regular fa-trash-can text-xl"></i></button>
                             </td>
                         </tr>
                     ))}

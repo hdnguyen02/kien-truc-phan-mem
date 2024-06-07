@@ -7,6 +7,7 @@ export default function Submits() {
     
     const [assignment, setAssignment] = useState()
     
+    const [urlPdf, setUrlPdf] = useState()
     async function getAssignment(){ 
         const subUrl = `/teacher/assignments/${params.idAssignment}`
         try {
@@ -18,6 +19,10 @@ export default function Submits() {
         }
     }   
 
+    function handleChangeView(url) { 
+        setUrlPdf(url)
+    }
+
     useEffect(() => {
         getAssignment()
     }, [])
@@ -27,7 +32,7 @@ export default function Submits() {
         {/* lấy ra bài nộp */}
         {
             assignment.submits.map((submit, index) => (
-                <div key={index} className=" flex-col cursor-pointer mb-8 shadow-md px-8 py-3 bg-gray-100 flex   justify-between">
+                <div onClick={() => handleChangeView(submit.url)} key={index} className=" flex-col cursor-pointer mb-8 shadow-md px-8 py-3 bg-gray-100 flex   justify-between">
                <span className="opacity-90">
                      {submit.user.email}
                    </span>
@@ -41,7 +46,7 @@ export default function Submits() {
             
         </div>
         <div className="w-full">
-        <iframe className="w-full h-screen" src="https://firebasestorage.googleapis.com/v0/b/learn-engl.appspot.com/o/assignment%2F1717510452882-CV%20H%E1%BB%93%20%C4%90%E1%BB%A9c%20Nguy%C3%AAn.pdf?alt=media" title="Iframe Example"></iframe>
+        <iframe className="w-full h-screen" src={urlPdf} title="Iframe Example"></iframe>
         </div>
     </div>
 }

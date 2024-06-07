@@ -78,7 +78,7 @@ export default function MembersClass() {
           <div>
             <span className="text-sm">Bạn chưa thêm học sinh</span>
           </div>
-        )}
+        )}  
       </div>
     )
   );

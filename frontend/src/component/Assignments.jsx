@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { baseUrl, version, fetchData, showToastMessage } from "../global";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate} from "react-router-dom";
 import Modal from "react-modal";
+import { ToastContainer } from "react-toastify";
 
 export default function Assignments() {
   const params = useParams();
+  const navigate = useNavigate()
   const [name, setName] = useState();
   const [desc, setDesc] = useState();
   const [date, setDate] = useState();
   const [time, setTime] = useState();
+
+  const location = useLocation();
 
   const [isOpenCreateAsm, setIsOpenCreateAsm] = useState();
 
@@ -45,18 +49,41 @@ export default function Assignments() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const response = await jsonRp.json() // thêm vào mảng hiện tại => khỏi cần reload 
-      
+      const response = await jsonRp.json();
+      await getAssignments();
+
       if (!jsonRp.ok) {
         throw new Error(response.message);
       }
+      setIsOpenCreateAsm(false);
+      showToastMessage("Tạo bài tập thành công");
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   }
 
+//   <Link
+//   to={`/teacher/classes/${params.id}/assignments/${assignment.id}`}
+//   key={index}
+  
+// >
+  
+// </Link>
+
+  function getDetailAsm(id) { 
+    // chuyển hướng tới .
+    if (location.pathname.includes('owner')) { 
+      navigate(`/teacher/classes/${params.id}/assignments/${id}`)
+    }
+    else {
+       navigate(`/student/classes/${params.id}/assignments/${id}`)
+    }
+  } 
+
+  
+
   useEffect(() => {
-    getAssignments()
+    getAssignments();
   }, []);
 
   const customStyles = {
@@ -80,33 +107,34 @@ export default function Assignments() {
     assignments && (
       <div>
         <div className="flex justify-end">
-          <button
-            onClick={() => setIsOpenCreateAsm(true)}
-            type="submit"
-            className="p-6"
-          >
-            <img src="/plus.png" className="w-8 h-8" alt="" />
-          </button>
+          {location.pathname.includes("owner") && (
+            <button
+              onClick={() => setIsOpenCreateAsm(true)}
+              type="submit"
+              className="p-6"
+            >
+              <img src="/plus.png" className="w-8 h-8" alt="" />
+            </button>
+          )}
         </div>
 
         {assignments.map((assignment, index) => {
           return (
-            <Link
-              to={`/teacher/classes/${params.id}/assignments/${assignment.id}`}
+            <div
               key={index}
+              onClick={() => getDetailAsm(assignment.id)}
               className="cursor-pointer mb-8 shadow-md px-8 py-3 bg-gray-100 flex items-center justify-between"
             >
-               <div className="flex items-center gap-x-3">
+              <div className="flex items-center gap-x-3">
                 <i className="fa-solid fa-file text-xl font-light"></i>
                 <span className="opacity-90">{assignment.name}</span>
                 <span>({assignment.quantitySubmit} nộp)</span>
               </div>
 
-
               <span className="text-xs text-[#6D6E6E]">
                 Đã đăng vào {assignment.deadline}
               </span>
-            </Link>
+            </div>
           );
         })}
 
@@ -165,7 +193,7 @@ export default function Assignments() {
 
               <div className="flex flex-col gap-y-2 w-full">
                 <label className="text-sm text-gray-600" htmlFor="">
-                  Ngày
+                  Giờ
                 </label>
                 <input
                   onChange={(e) => setTime(e.target.value)}
@@ -177,18 +205,20 @@ export default function Assignments() {
             </div>
             <div className="mt-6 flex gap-x-3 justify-between items-center">
               <div className="w-full">
-              <button
-                type="submit"
-                className="h-10 flex items-center gap-x-2 px-8 text-sm text-center text-white font-bold rounded-md bg-primary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
-              >
-                Tạo
-              </button>
+                {/* ẩn đi với role student */}
+                <button
+                  type="submit"
+                  className="h-10 flex items-center gap-x-2 px-8 text-sm text-center text-white font-bold rounded-md bg-primary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300"
+                >
+                  Tạo
+                </button>
               </div>
-             
-              <input type="file" name="file" id="file" accept=".pdf" required/>
+
+              <input type="file" name="file" id="file" accept=".pdf" required />
             </div>
           </form>
         </Modal>
+        <ToastContainer />
       </div>
     )
   );

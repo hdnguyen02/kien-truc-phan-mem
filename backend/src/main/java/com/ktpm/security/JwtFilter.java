@@ -3,6 +3,7 @@ package com.ktpm.security;
 
 import com.ktpm.entity.User;
 import com.ktpm.service.JwtService;
+import com.ktpm.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +42,8 @@ public class JwtFilter  extends OncePerRequestFilter {
             @NonNull FilterChain filterChain ) throws ServletException, IOException {
 
         try {
-            if (request.getServletPath().contains("auth")) {
+            String path = request.getServletPath();
+            if (path.contains("api/v1/auth")) {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -54,6 +56,8 @@ public class JwtFilter  extends OncePerRequestFilter {
             final String username = jwtService.extractUsername(jwt);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User userDetails = (User) userDetailsService.loadUserByUsername(username);
+
+
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities()

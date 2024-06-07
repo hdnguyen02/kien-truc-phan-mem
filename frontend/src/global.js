@@ -40,7 +40,7 @@ export async function fetchData(subUrl, method, body) {
 
 
 export async function fetchDataWithoutAccessToken(subUrl, method, body) {
-    const url = `${baseUrl}${subUrl}`
+    const url = `${baseUrl + version}${subUrl}`
 
 
     const options = { 

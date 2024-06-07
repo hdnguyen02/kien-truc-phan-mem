@@ -69,6 +69,11 @@ function App() {
                 <Route path='submits' element={<Submits/>}> </Route>
             </Route>
 
+            <Route path='/student/classes/:idClass/assignments/:idAssignment' element={<AssignmentTeacher/>}>
+                <Route path='' element={<DetailAssignment/>}> </Route>
+            </Route>
+
+
             {/* classes */}
             <Route path='/classes' element={<ClassUser />}>
               <Route path='' element={<Classes />}>

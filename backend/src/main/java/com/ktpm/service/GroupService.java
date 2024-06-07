@@ -152,7 +152,6 @@ public class GroupService {
             if (!userGroupDB.isActive()) {
                 userGroupDB.setTokenActive(token);
 
-
                 Thread threadSaveData = new Thread(()-> {
                     userGroupRepository.save(userGroupDB);
                 });

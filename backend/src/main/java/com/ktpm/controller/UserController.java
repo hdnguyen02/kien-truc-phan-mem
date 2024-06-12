@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -46,5 +47,18 @@ public class UserController {
         Response response = new Response(userDto, "Hiệu chỉnh thành công tin của người dùng", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // change pw
+    @PutMapping("users/password")
+    public ResponseEntity<Response> changePW(@RequestBody Map<String, String> maps) {
+
+        // string pw.
+        String newPW = maps.get("newPassword");
+        userService.changePW(newPW);
+        Response response = new Response(null, "Thay đổi mật khẩu thành công", true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
 
 }

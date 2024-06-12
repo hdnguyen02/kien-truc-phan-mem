@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ public class UserService {
     private final UserDao userDao;
     private final Helper helper;
     private final FirebaseStorageService firebaseStorageService;
+    private final PasswordEncoder passwordEncoder;
 
     // update thông tin theo.  name, gender, age, phone, dataOfBirth, avatar
     public UserDto updateUser(String name, String gender, Integer age, String phone, String dataOfBirth, MultipartFile avatar) throws IOException {
@@ -67,5 +69,11 @@ public class UserService {
     public User loadUserByEmail(String email) {
         return userDao.findById(email)
                 .orElseThrow(() -> new UsernameNotFoundException("not found user!"));
+    }
+
+    public void changePW(String newPW) {
+        User user = helper.getUser();
+        user.setPassword(passwordEncoder.encode(newPW));
+        userDao.save(user);
     }
 }

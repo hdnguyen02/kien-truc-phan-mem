@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("api/v1/students")
-public class SubmitSutudentController {
+public class SubmitStudentController {
 
     private final SubmitService submitService;
 

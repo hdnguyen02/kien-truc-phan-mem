@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin("*")
 @RequiredArgsConstructor
+@RequestMapping("${system.version}")
 public class ForgotPWController {
     private final EmailService emailService;
     private final UserDao userDao;

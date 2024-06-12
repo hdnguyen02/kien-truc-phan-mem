@@ -157,7 +157,7 @@ const Classes = () => {
                 <img src='/close.png' className='w-5 h-5' alt='' />
               </button>
             </div>
-            <h3 className='text-xl text-gray-800'>Tạo bài tập</h3>
+            <h3 className='text-xl text-gray-800'>Tạo lớp</h3>
 
             <div className='mt-6'>
               <div className='flex flex-col gap-y-2 w-full'>

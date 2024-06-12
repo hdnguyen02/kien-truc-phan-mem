@@ -1,6 +1,6 @@
 package com.ktpm.service;
 
-import com.ktpm.Helper;
+import com.ktpm.util.Helper;
 import com.ktpm.dao.CommentDao;
 import com.ktpm.dto.CommentDto;
 import com.ktpm.entity.Comment;

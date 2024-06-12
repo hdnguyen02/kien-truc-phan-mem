@@ -1,6 +1,6 @@
 package com.ktpm.service;
 
-import com.ktpm.Helper;
+import com.ktpm.util.Helper;
 import com.ktpm.dao.GroupDao;
 import com.ktpm.dao.UserDao;
 import com.ktpm.dao.UserGroupDao;

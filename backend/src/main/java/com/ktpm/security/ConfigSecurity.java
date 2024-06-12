@@ -58,7 +58,7 @@ public class ConfigSecurity {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/auth/*", "sign-up", "groups/*/add-users/active/*").permitAll()
+                        .requestMatchers("api/v1/payment-callback","api/v1/payment", "api/v1/auth/*", "api/v1/forgot-password", "groups/*/add-users/active/*").permitAll()
                         .requestMatchers("api/v1/**").authenticated()
                         .anyRequest().permitAll()
                 )

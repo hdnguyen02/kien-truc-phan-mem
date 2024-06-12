@@ -16,7 +16,6 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class User implements UserDetails {
 
     @Id
@@ -73,7 +72,7 @@ public class User implements UserDetails {
     @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
-        this.roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        this.roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         return authorities;
     }
 

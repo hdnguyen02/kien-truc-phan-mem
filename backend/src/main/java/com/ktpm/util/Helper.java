@@ -1,4 +1,4 @@
-package com.ktpm;
+package com.ktpm.util;
 
 
 import com.ktpm.entity.User;
@@ -12,8 +12,6 @@ import java.util.Date;
 
 @Component
 public class Helper {
-
-
 
 
     public String formatDate(Date date) {

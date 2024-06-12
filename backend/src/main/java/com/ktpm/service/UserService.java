@@ -1,17 +1,14 @@
 package com.ktpm.service;
 
 
-import com.ktpm.Helper;
+import com.ktpm.util.Helper;
 import com.ktpm.dao.UserDao;
 import com.ktpm.dto.UserDto;
 import com.ktpm.entity.Role;
 import com.ktpm.entity.User;
 import java.nio.file.Paths;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,15 +23,7 @@ import java.time.format.DateTimeFormatter;
 public class UserService {
     private final UserDao userDao;
     private final Helper helper;
-
-    public UserDto updateRoleTeacher() {
-        // update lên role hiện tại
-        User user = helper.getUser();
-        Role role = new Role("TEACHER");
-        user.getRoles().add(role);
-        return new UserDto(userDao.save(user));
-    }
-
+    private final FirebaseStorageService firebaseStorageService;
 
     // update thông tin theo.  name, gender, age, phone, dataOfBirth, avatar
     public UserDto updateUser(String name, String gender, Integer age, String phone, String dataOfBirth, MultipartFile avatar) throws IOException {
@@ -58,28 +47,8 @@ public class UserService {
 
 
         if (avatar != null) {
-            String UPLOAD_DIR = "\\src\\main\\resources\\static\\avatar\\";
-            try {
-                String uploadPath = Paths.get("").toAbsolutePath() + UPLOAD_DIR;
-                String oldAvatar = user.getAvatar();
-                if (oldAvatar != null) {
-                    File oldFileAvatar = new File(uploadPath + oldAvatar);
-                    if (oldFileAvatar.exists()) {
-                        boolean isDeleted = oldFileAvatar.delete();
-                        System.out.println("delete: " + isDeleted + " " + oldFileAvatar);
-                    }
-                }
-                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("mm-hh-dd-MM-yyyy"));
-                String originalFilename = avatar.getOriginalFilename();
-                String newFilename = timestamp + "-" + originalFilename;
-                String filePath = Paths.get(uploadPath, newFilename).toString();
-                File des = new File(filePath);
-                avatar.transferTo(des);
-                user.setAvatar(newFilename);
-            }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+            String url =  firebaseStorageService.save("avatar", avatar);
+            user.setAvatar(url);
         }
 
         return new UserDto(userDao.save(user));

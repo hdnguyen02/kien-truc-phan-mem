@@ -2,6 +2,8 @@ package com.ktpm.controller;
 
 import com.ktpm.dto.GroupDto;
 import com.ktpm.dto.UserDto;
+import com.ktpm.mylogger.LogLevel;
+import com.ktpm.mylogger.Logger;
 import com.ktpm.request.GroupRequest;
 import com.ktpm.request.UserGroupRequest;
 import com.ktpm.response.Response;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +25,16 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
+
     @PostMapping("/groups")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest){
         Response response = new Response();
 
         response.setData(groupService.createGroup(groupRequest));
         response.setSuccess(true);
         response.setMessage("Tạo class thành công");
+
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -39,30 +45,10 @@ public class GroupController {
         Response responseData = new Response();
         responseData.setData(groupService.updateGroup(groupRequest));
         responseData.setSuccess(true);
+
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
-    //
-//    @GetMapping("/group")
-//    public ResponseEntity<?> getGroups() {
-//        Response responseData = new Response();
-//        responseData.setSuccess(true);
-//
-//        logger.log(LogLevel.INFO, "GET GROUPS " +  " IS SUCCESSFULLY");
-//        return  ResponseEntity.status(HttpStatus.CREATED).body(responseData);
-//    }
-//
-//
-//    @GetMapping("/group/{id}")
-//    public ResponseEntity<?> getGroupById(@PathVariable(name = "id") Long id) {
-//        Response responseData = new Response();
-//
-//        GroupDto groupDto = groupService.getGroupById(id);
-//        responseData.setData(groupDto);
-//        responseData.setSuccess(true);
-//        logger.log(LogLevel.INFO, "GET GROUP ID " + id.toString() + " IS SUCCESSFULLY");
-//        return  ResponseEntity.status(HttpStatus.OK).body(responseData);
-//    }
-//
+
         @GetMapping("/groups/{id}/members")
     public ResponseEntity<?> getUserOfGroupById(@PathVariable Long id) {
         Response responseData = new Response();
@@ -70,6 +56,7 @@ public class GroupController {
         List<UserDto> userDtos= groupService.getUserOfGroup(id);
         responseData.setData(userDtos);
         responseData.setSuccess(true);
+
         return  ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 

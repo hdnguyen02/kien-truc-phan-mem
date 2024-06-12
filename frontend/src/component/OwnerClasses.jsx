@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { fetchData, showToastMessage } from "../global"
 import { Link } from "react-router-dom"
+import Modal from 'react-modal'
 
 
 export default function OwnerClasses() {
@@ -8,6 +9,13 @@ export default function OwnerClasses() {
     const [ownerClasses, setOwnerClasses] = useState()
 
     const roles = JSON.parse(localStorage.getItem("roles"))
+
+    // const [nameClass, setNameClass] = useState()
+    // const [descriptionClass, setDescriptionClass] = useState()
+    
+    // const [isOpenEditClass, setIsOpenEditClass] = useState(false)
+
+
 
     async function getOwnerClass() {
         const subUrl = `/groups/owner`
@@ -22,6 +30,7 @@ export default function OwnerClasses() {
     }
 
     async function handleDeleteClass(id) { 
+    
         const subUrl = `/groups/${id}`
         await fetchData(subUrl, 'DELETE')
         getOwnerClass()
@@ -32,6 +41,25 @@ export default function OwnerClasses() {
             getOwnerClass()
         }
     }, [])
+
+
+
+    // const stylesModalEditClass = {
+    //     content: {
+    //       width: '500px',
+    //       height: '310px',
+    //       top: '50%',
+    //       left: '50%',
+    //       transform: 'translate(-50%, -50%)',
+    //       padding: '20px',
+    //       border: '0.5px solid #ccc',
+    //       borderRadius: '8px',
+    //       backgroundColor: 'while',
+    //       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    //       outline: 'none',
+    //       overflow: 'auto',
+    //     },
+    //   }
 
     function renderUnlockedUser() { 
         return <div className="flex items-center justify-center flex-col gap-y-3">
@@ -51,6 +79,58 @@ export default function OwnerClasses() {
 
 
     return ownerClasses ? (<div>
+
+{/* <Modal
+          isOpen={isOpenEditClass}
+          onRequestClose={() => setIsOpenEditClass(false)}
+          contentLabel='Custom Modal'
+          style={stylesModalEditClass}
+        >
+          <form onSubmit={handleEditClass} className=''>
+            <div className='flex justify-end'>
+              <button onClick={() => setIsOpenEditClass(false)} type='button'>
+                <img src='/close.png' className='w-5 h-5' alt='' />
+              </button>
+            </div>
+            <h3 className='text-xl text-gray-800'>Hiệu chỉnh lớp</h3>
+
+            <div className='mt-6'>
+              <div className='flex flex-col gap-y-2 w-full'>
+                <label className='text-sm text-gray-600' htmlFor=''>
+                  Tên
+                </label>
+                <input
+                  onChange={(e) => setNameClass(e.target.value)}
+                  type='text'
+                  className='h-9 px-4'
+                  required
+                />
+              </div>
+
+              <div className='flex flex-col gap-y-2 w-full'>
+                <label className='text-sm text-gray-600' htmlFor=''>
+                  Mô tả
+                </label>
+                <input
+                  onChange={(e) => setDescriptionClass(e.target.value)}
+                  type='text'
+                  className='h-9 px-4'
+                  required
+                />
+              </div>
+            </div>
+
+          
+            <div className='flex justify-end mt-4'>
+              <button
+                type='submit'
+                className='h-10 flex items-center gap-x-2 px-8 text-sm text-center text-white font-bold rounded-md bg-primary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300'
+              >
+                Tạo
+              </button>
+              </div>
+          </form>
+        </Modal> */}
         {ownerClasses.length != 0 ?
             (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8 border-separate border-spacing-0 border-spacing-y-4">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -62,9 +142,10 @@ export default function OwnerClasses() {
                             Số thành viên
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Chi tiết
+                          
                         </th>
-                        <th className='text-center'>Xóa</th>
+                        <th className='text-center'></th>/
+                        {/* <th className='text-center'></th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +160,9 @@ export default function OwnerClasses() {
                             <td className="px-6 py-4">
                                 <Link to={'/classes/detail-owner/' + ownerClass.id + '/members'} className="underline text-blue-500">Chi tiết</Link>
                             </td>
+                            {/* <td className="px-6 py-4">
+                                <button onClick={(event) => handleEditClass(event, ownerClass.id)} className="underline text-blue-500">Hiệu chỉnh</button>
+                            </td> */}
                             <td className='px-6 py-4 text-center rounded-tr-lg rounded-br-lg'>
                                 <button onClick={() => handleDeleteClass(ownerClass.id)} className="underline text-red-500"><i className="fa-regular fa-trash-can text-xl"></i></button>
                             </td>
@@ -89,5 +173,6 @@ export default function OwnerClasses() {
                 <span className='text-sm'>Bạn chưa tạo lớp nào</span>
             </div>)
         }
+       
     </div>) : (renderUnlockedUser())
 }

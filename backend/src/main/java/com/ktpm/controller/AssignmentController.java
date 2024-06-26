@@ -1,20 +1,12 @@
 package com.ktpm.controller;
 
 
-import com.ktpm.dto.CardDto;
-import com.ktpm.request.AssignmentRequest;
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -23,7 +15,6 @@ import java.util.List;
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
-
 
     @GetMapping("/assignments")
     public ResponseEntity<?> getAssignments(@RequestParam(name = "id-group") Long idGroup

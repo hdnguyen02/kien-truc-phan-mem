@@ -40,17 +40,6 @@ public class ConfigSecurity {
     @Autowired
     private CustomLogoutHandler logoutHandler;
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -58,7 +47,7 @@ public class ConfigSecurity {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/payment-callback","api/v1/payment", "api/v1/auth/*", "api/v1/forgot-password", "groups/*/add-users/active/*").permitAll()
+                        .requestMatchers("api/v1/payment-callback","api/v1/payment", "api/v1/auth/*", "api/v1/forgot-password", "groups/*/active").permitAll()
                         .requestMatchers("api/v1/**").authenticated()
                         .anyRequest().permitAll()
                 )

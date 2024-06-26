@@ -1,10 +1,9 @@
 package com.ktpm.controller;
 
-import com.ktpm.request.CommentRequest;
-import com.ktpm.response.Response;
+import com.ktpm.dto.CommentRequest;
+import com.ktpm.dto.Response;
 import com.ktpm.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("${system.version}")
 public class CommentController {
-    @Autowired
-    private CommentService commentService;
+
+    private final CommentService commentService;
 
     @PostMapping("/comments")
     public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest) {

@@ -6,7 +6,7 @@ import com.ktpm.dto.CommentDto;
 import com.ktpm.entity.Comment;
 import com.ktpm.entity.Group;
 import com.ktpm.entity.User;
-import com.ktpm.request.CommentRequest;
+import com.ktpm.dto.CommentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

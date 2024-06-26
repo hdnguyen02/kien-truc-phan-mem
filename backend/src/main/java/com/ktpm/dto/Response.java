@@ -1,4 +1,4 @@
-package com.ktpm.response;
+package com.ktpm.dto;
 
 import lombok.*;
 

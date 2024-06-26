@@ -3,7 +3,7 @@ package com.ktpm.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "UserGroup")
+@Table(name = "user_group")
 @Entity
 @Getter
 @Setter
@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 public class UserGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne()
@@ -27,3 +27,9 @@ public class UserGroup {
 
     private boolean isActive;
 }
+
+// người dùng có thể xin vào group => tiến hành xin vào.
+// người dùng duyệt.
+
+// khi đăng nhập => bắt buộc nhập vào username.
+

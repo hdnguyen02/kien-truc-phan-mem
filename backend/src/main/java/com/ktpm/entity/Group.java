@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "Grades")
+@Table(name = "grades")
 @Entity
 @Getter
 @Setter
@@ -15,15 +15,15 @@ import java.util.List;
 @ToString
 public class Group extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
 
-    @Column(nullable = true, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     private String description;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "email_owner")
     private User owner;
 
@@ -36,8 +36,6 @@ public class Group extends BaseEntity{
     @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
     private List<Assignment> assignments;
 
-
-    
     public Group(Long id) {
         this.id = id;
     }

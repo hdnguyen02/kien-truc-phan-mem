@@ -58,7 +58,7 @@ public class User implements UserDetails {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "users_roles", joinColumns = @JoinColumn(name = "email_user"),inverseJoinColumns = @JoinColumn(name = "name_role"))
+    @JoinTable( name = "user_role", joinColumns = @JoinColumn(name = "email_user"),inverseJoinColumns = @JoinColumn(name = "name_role"))
     private Set<Role> roles;
 
 
@@ -67,6 +67,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGroup> userGroups;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<HistorySearch> historySearches;
 
     @Override
     @Transactional

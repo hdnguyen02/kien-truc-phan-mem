@@ -4,26 +4,21 @@ package com.ktpm.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name="tokens")
+@Table(name = "search_history")
 @Entity
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class Token {
+public class HistorySearch {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
-    @Column(nullable = false)
-    private String code;
-
-    @Column(nullable = false)
-    private Boolean isSignOut;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="email_user")
     private User user;
+
 }

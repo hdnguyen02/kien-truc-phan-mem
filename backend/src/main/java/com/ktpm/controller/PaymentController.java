@@ -1,13 +1,11 @@
 package com.ktpm.controller;
 
-import com.google.rpc.Help;
 import com.ktpm.dao.UserDao;
 import com.ktpm.entity.Role;
 import com.ktpm.entity.User;
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.PaymentService;
 import com.ktpm.util.Helper;
-import jakarta.mail.Header;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,19 +35,13 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @GetMapping("test")
-//    public String test() {
-//        User user = helper.getUser();
-//        System.out.println(user.getRoles());
-//        return "test";
-//    }
+
     @GetMapping("payment-callback")
     public ResponseEntity<?> paymentCallbackHandler(HttpServletRequest request) {
 
-        // lấy ra email
         String email = request.getParameter("email");
         User user = userDao.findById(email).orElseThrow();
-        // update user
+
         user.getRoles().add(Role.builder().name("TEACHER").build());
         userDao.save(user);
 
@@ -57,9 +49,6 @@ public class PaymentController {
 
 
         if (status.equals("00")) {
-
-
-
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(Response.builder().success(true).message("Thanh toán thành công").data(null).build());

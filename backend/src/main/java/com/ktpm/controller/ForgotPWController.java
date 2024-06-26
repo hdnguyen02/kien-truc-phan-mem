@@ -3,7 +3,7 @@ package com.ktpm.controller;
 
 import com.ktpm.dao.UserDao;
 import com.ktpm.entity.User;
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.EmailService;
 import com.ktpm.service.JwtService;
 import lombok.RequiredArgsConstructor;

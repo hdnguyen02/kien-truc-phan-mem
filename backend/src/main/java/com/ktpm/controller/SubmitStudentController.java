@@ -1,7 +1,7 @@
 package com.ktpm.controller;
 
 
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.SubmitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,18 +18,18 @@ public class SubmitStudentController {
     private final SubmitService submitService;
 
 
+    // chỗ này là thời hạn nộp bài => bắt thêm trường hợp cần phải đúng thời gian mới được nộp.
+
     @PostMapping("/submits")
     public ResponseEntity<?> createGroup(@RequestParam Long idGroup,
                                          @RequestParam Long idAssignment,
                                          @RequestParam MultipartFile file
                                          ) throws Exception {
+
+
         Response response = new Response();
-
         submitService.createSubmit(idGroup, idAssignment, file);
-
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
-
-    // lấy ra toàn bộ submit cho admin
-
 }

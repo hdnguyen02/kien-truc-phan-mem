@@ -1,6 +1,6 @@
 package com.ktpm.controller;
 
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class NotAuthController {
 
     private final GroupService groupService;
-    @GetMapping("/groups/{id}/add-users/active/{token}")
+    @GetMapping("/groups/{id}/active")
     public ResponseEntity<?> addUserGroup(@PathVariable(name = "id") Long id,
-                                          @PathVariable(name = "token") String token){
+                                          @RequestParam String token){
         Response response = new Response();
 
         response.setData(groupService.activeUserGroup(id, token));
@@ -24,4 +24,7 @@ public class NotAuthController {
 
         return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    // bỏ vào đây đăng nhập + đăng ký.
+
 }

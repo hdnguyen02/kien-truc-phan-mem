@@ -2,8 +2,7 @@ package com.ktpm.controller;
 
 
 import com.ktpm.dto.UserDto;
-import com.ktpm.request.UserRequest;
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,7 +51,6 @@ public class UserController {
     @PutMapping("users/password")
     public ResponseEntity<Response> changePW(@RequestBody Map<String, String> maps) {
 
-        // string pw.
         String newPW = maps.get("newPassword");
         userService.changePW(newPW);
         Response response = new Response(null, "Thay đổi mật khẩu thành công", true);

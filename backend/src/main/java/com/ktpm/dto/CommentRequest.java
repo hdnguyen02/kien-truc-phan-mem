@@ -1,4 +1,4 @@
-package com.ktpm.request;
+package com.ktpm.dto;
 
 import com.ktpm.entity.User;
 import lombok.AllArgsConstructor;

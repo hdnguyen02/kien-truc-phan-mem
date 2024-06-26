@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 public class Deck {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String name;

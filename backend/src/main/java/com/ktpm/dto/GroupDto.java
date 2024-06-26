@@ -20,7 +20,7 @@ public class GroupDto {
     private String name;
     private String description;
     private int quantity;
-    List<UserDto> userGroups = new ArrayList<>();
+        List<UserDto> userGroups = new ArrayList<>();
 
     public static GroupDto mapToGroupDto(Group group){
         GroupDto groupDto = new GroupDto();

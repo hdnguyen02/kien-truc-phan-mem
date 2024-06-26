@@ -1,4 +1,4 @@
-package com.ktpm.request;
+package com.ktpm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class GroupRequest {
-    private Long id;
-    private String email;
+//    private Long id;
     private String name;
-
     private String description;
 }

@@ -1,9 +1,9 @@
 package com.ktpm.controller;
 
-import com.ktpm.request.SignInRequest;
-import com.ktpm.request.SignUpRequest;
-import com.ktpm.response.AuthResponse;
-import com.ktpm.response.Response;
+import com.ktpm.dto.SignInRequest;
+import com.ktpm.dto.SignUpRequest;
+import com.ktpm.dto.AuthResponse;
+import com.ktpm.dto.Response;
 import com.ktpm.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("api/v1/auth")
 public class AuthController {
     private final AuthService authService;

@@ -1,4 +1,4 @@
-package com.ktpm.request;
+package com.ktpm.dto;
 
 
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class SignUpRequest {
+public class SignInRequest {
     private String email;
     private String password;
     private Boolean isRemember;

@@ -6,7 +6,7 @@ import com.ktpm.dto.DeckDto;
 import com.ktpm.dto.LDeckDto;
 import com.ktpm.entity.Deck;
 import com.ktpm.entity.User;
-import com.ktpm.request.DeckRequest;
+import com.ktpm.dto.DeckRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

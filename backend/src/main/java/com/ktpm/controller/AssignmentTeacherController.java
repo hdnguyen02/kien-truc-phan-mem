@@ -1,12 +1,12 @@
 package com.ktpm.controller;
 
 
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.AssignmentService;
-import com.ktpm.service.SubmitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +21,8 @@ public class AssignmentTeacherController {
 
     private final AssignmentService assignmentService;
 
-    // lấy ra chi tiết bài tập dựa vào id + thằng đó
+
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/assignments/{id}")
     public ResponseEntity<?> getTeacherAssignment(@PathVariable Long id) throws Exception {
 
@@ -33,7 +34,7 @@ public class AssignmentTeacherController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/assignments")
     public ResponseEntity<?> filterCards(@RequestParam String name,
                                          @RequestParam String description,

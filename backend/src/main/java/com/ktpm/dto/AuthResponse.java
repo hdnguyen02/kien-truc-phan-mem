@@ -1,4 +1,4 @@
-package com.ktpm.response;
+package com.ktpm.dto;
 
 import com.ktpm.dto.UserDto;
 import lombok.AllArgsConstructor;

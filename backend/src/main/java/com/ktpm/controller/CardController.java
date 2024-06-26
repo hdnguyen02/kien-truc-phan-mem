@@ -1,7 +1,7 @@
 package com.ktpm.controller;
 
 import com.ktpm.dto.CardDto;
-import com.ktpm.response.Response;
+import com.ktpm.dto.Response;
 import com.ktpm.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

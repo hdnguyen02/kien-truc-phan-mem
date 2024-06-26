@@ -28,15 +28,25 @@ public class SubmitService {
         String emailUser = helper.getEmailUser();
         User user = helper.getUser();
         Assignment assignment = assignmentDao.findAssignmentByIdGroupIdAndUserEmail(idAssignment, idGroup, emailUser).orElse(null);
+
         if (assignment == null) throw new Exception("Không tìm thấy tài nguyên");
 
+        Date deadline = assignment.getDeadline();
+        Date submitDate = new Date();
+        // check thời gian submit
+
+        if (deadline.compareTo(submitDate) < 0) {
+            throw new Exception("Quá hạn nộp bài!");
+        }
+
+        // tiếp tục lưu file.
         String url = firebaseStorageService.save("submit", file);
 
         Submit submit = new Submit();
         submit.setAssignment(assignment);
         submit.setUser(user);
         submit.setUrl(url);
-        submit.setTime(new Date());
+        submit.setTime(submitDate);
 
         submitDao.save(submit);
     }

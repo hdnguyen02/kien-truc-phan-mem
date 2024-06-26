@@ -23,7 +23,7 @@ import org.springframework.core.io.Resource;
 
 @Configuration
 @RequiredArgsConstructor
-public class Config {
+public class BeanConfig {
     private final UserDao userDao;
 
     @Bean
